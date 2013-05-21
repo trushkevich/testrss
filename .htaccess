@@ -1,0 +1,4 @@
+RewriteEngine On
+
+RewriteCond %{HTTP_HOST} ^testrss\.example\.com$ [NC]
+RewriteRule ^(.*)public\/(.*)$ http://testrss.loc/$1$2
