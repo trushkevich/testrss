@@ -1,5 +1,3 @@
-require 'securerandom'
-
 class User < ActiveRecord::Base
 
   # Include default devise modules. Others available are:
@@ -70,10 +68,6 @@ class User < ActiveRecord::Base
     user = User.where(provider: access_token.provider, uid: access_token.uid).first
 
     unless user
-      until email = "#{SecureRandom.hex(8)}@#{SecureRandom.hex(8)}.com" and User.where(email: email).first.blank?
-        next
-      end
-
       name_parts = data['name'].split(' ')
 
       user = User.new(
