@@ -1,0 +1,27 @@
+- content_for(:title) do
+  - I18n.t('controllers.actions.crop_avatar')
+- content_for(:head) do
+  - stylesheet_link_tag "jquery.Jcrop.min"
+  - javascript_include_tag "jquery.color"
+  - javascript_include_tag "jquery.Jcrop.min"
+  - javascript_include_tag "crop"
+
+= link_to I18n.t('controllers.actions.edit_profile'), edit_user_registration_path
+
+#crop_data[data-pre-crop-width="#{@resource.avatar_geometry(:pre_crop).width}" data-pre-crop-height="#{@resource.avatar_geometry(:pre_crop).height}" data-original-width="#{@resource.avatar_geometry(:original).width}" data-original-height="#{@resource.avatar_geometry(:original).height}"]
+
+h1
+  = I18n.t('controllers.actions.crop')
+
+div
+  = image_tag @resource.avatar.url(:pre_crop), id: "cropbox"
+
+div[class="w100 h100 oh mt20"]
+  = image_tag @resource.avatar.url(:pre_crop), id: "preview"
+
+= form_for @resource, url: update_user_registration_path, method: :put do |f|
+  - for attribute in [:crop_x, :crop_y, :crop_w, :crop_h]
+    = f.hidden_field attribute, id: attribute
+  p
+    = f.submit I18n.t('controllers.actions.crop')
+    

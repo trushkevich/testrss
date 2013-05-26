@@ -1,0 +1,73 @@
+- content_for(:title) do
+  - "#{ I18n.t('controllers.actions.profile') } #{ I18n.t('controllers.actions.profile').downcase }"
+
+h2
+  #{ I18n.t('controllers.actions.edit') } #{ I18n.t('controllers.actions.profile').downcase }
+
+= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f|
+  = devise_error_messages!
+
+
+  div
+    = f.label :avatar
+  .fl
+    = image_tag current_user.avatar.url(:small), class: 'mr10 w100 h100'
+  .fl
+    - if resource.avatar
+      = link_to I18n.t('controllers.actions.recrop'), recrop_path
+      br
+    = f.file_field :avatar
+  .clear
+
+  div
+    = f.label :first_name
+    br
+    = f.text_field :first_name, :autofocus => true
+  div
+    = f.label :last_name
+    br
+    = f.text_field :last_name
+  div
+    = f.label :login
+    br
+    = f.text_field :login
+  div
+    = f.label :email
+    br
+    = f.email_field :email
+
+  - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+    div
+      #{ I18n.t('auth.waiting_confirmation_for') }: #{ resource.unconfirmed_email }
+
+  div
+    = f.label :password
+    i
+      = ' ' + I18n.t('auth.leave_blank_password')
+    br
+    = f.password_field :password, :autocomplete => "off"
+
+  div
+    = f.label :password_confirmation
+    br
+    = f.password_field :password_confirmation
+
+  / oauth users may have no password
+  - unless current_user.password.blank?
+    div
+      = f.label :current_password
+      i
+        = I18n.t('auth.current_password_needed')
+      br
+      = f.password_field :current_password
+
+  div
+    = f.submit I18n.t('controllers.actions.update')
+
+h3
+  = I18n.t('auth.cancel_account')
+
+p
+  #{ I18n.t('general.unhappy') }? #{ button_to I18n.t('auth.cancel_account'), registration_path(resource_name), :data => { :confirm => I18n.t('general.are_you_sure') }, :method => :delete }
+
+= link_to I18n.t('general.back'), :back

@@ -8,9 +8,18 @@ FactoryGirl.define do
     f.login { Faker::Internet.user_name }
     f.email { Faker::Internet.email }
     f.password { Faker::Lorem.word }
+    f.profile_type { 'basic' }
   end
 
   factory :invalid_user, parent: :user do |f|
     f.first_name nil
+  end
+
+  factory :medium_user, parent: :user do |f|
+    f.profile_type { 'medium' }
+  end
+
+  factory :premium_user, parent: :user do |f|
+    f.profile_type { 'premium' }
   end
 end

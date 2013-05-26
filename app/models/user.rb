@@ -8,17 +8,50 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :first_name, :last_name, :login, :password, :password_confirmation, :remember_me,
-                  :provider, :uid
+                  :provider, :uid, :profile_type, :avatar, :crop_x, :crop_y, :crop_w, :crop_h
                   
-  attr_accessor :meta_login
+  attr_accessor :meta_login, :crop_x, :crop_y, :crop_w, :crop_h
+
+  has_attached_file :avatar,
+    :url => "/assets/:class/:attachment/:id/:style/:hash.:extension",
+    :path => ":rails_root/app/assets/images/:class/:attachment/:id/:style/:hash.:extension",
+    :hash_secret => "udhg72gu2f9273ggf2hf823f2",
+    :styles => { 
+      :pre_crop   => ["500x500>", :png],
+      :large   => ["400x400#", :png],
+      :medium  => ["200x200#", :png],
+      :small   => ["100x100#", :png],
+      :tiny    => ["50x50#", :png],
+    },
+    :processors => [:cropper],
+    :default_url => "/assets/missing_avatar.png"
 
   validates :first_name, :length => { :maximum => 50 }, :presence => true
   validates :last_name, :length => { :maximum => 50 }, :presence => true
   validates :login, :length => { :maximum => 50 }, :presence => true, :uniqueness => true
+  validates :profile_type, :inclusion=> { :in => %w(basic medium premium) }, :presence => true
+  validates_attachment_content_type :avatar, :content_type => ['image/jpeg', 'image/png', 'image/gif', 'image/pjpeg', 'image/x-png'] #last two for IE 6-8
+  validates_attachment_size :avatar, :less_than => 1.megabyte
+
 
   def full_name
     [first_name.capitalize, last_name.capitalize].join ' '
   end
+
+  def max_channels
+    case profile_type
+    when 'basic'
+      10
+    when 'medium'
+      20
+    when 'premium'
+      100
+    end
+  end
+
+  #############################
+  ###     DEVISE  START     ###
+  #############################
 
   # Override Devise's method to let oauth users register without requiring email
   # (for example Twitter won't share user's email)
@@ -105,5 +138,46 @@ class User < ActiveRecord::Base
     clean_up_passwords
     result
   end
+
+  #############################
+  ###     DEVISE  END       ###
+  #############################
+
+
+  #############################
+  ###   PAPERCLIP  START    ###
+  #############################
+
+  def cropping?
+    !crop_x.blank? && !crop_y.blank? && !crop_w.blank? && !crop_h.blank?
+  end
+
+  def avatar_geometry(style = :original)
+    @geometry ||= {}
+    @geometry[style] ||= Paperclip::Geometry.from_file(avatar.path(style))
+  end
+
+  def reprocess_avatar
+    avatar.reprocess!
+  end
+
+  # to allow recrop previously uploaded image
+  # file operations are necessary due to after recropping one style, filenames for all other
+  # style are being recalculated
+  def reprocess_pre_crop
+    old_files = {}
+    avatar.styles.keys.each do |style|
+      old_files[style] = avatar.path(style)
+    end
+    avatar.reprocess!(:pre_crop)
+    avatar.styles.keys.each do |style|
+      next if style == :pre_crop
+      FileUtils.move(old_files[style], avatar.path(style))
+    end
+  end
+
+  #############################
+  ###    PAPERCLIP  END     ###
+  #############################
 
 end

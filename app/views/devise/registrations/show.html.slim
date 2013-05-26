@@ -1,0 +1,27 @@
+- content_for(:title) do
+  - I18n.t('controllers.actions.profile')
+
+h2
+  = I18n.t('controllers.actions.profile')
+
+= link_to I18n.t('controllers.actions.edit_profile'), edit_user_registration_path
+
+h4
+  = I18n.t('models.attributes.avatar')
+= image_tag @resource.avatar.url(:medium), class: 'w200 h200'
+
+h4
+  = I18n.t('models.attributes.first_name')
+= @resource.first_name
+
+h4
+  = I18n.t('models.attributes.last_name')
+= @resource.last_name
+
+h4
+  = I18n.t('models.attributes.login')
+= @resource.login
+
+h4
+  = I18n.t('models.attributes.email')
+= @resource.email

@@ -4,6 +4,10 @@
 
 .center {text-align: center;}
 
+.vab {vertical-align: bottom;}
+.vam {vertical-align: middle;}
+.vat {vertical-align: top;}
+
 .fl {float: left;}
 .fr {float: right;}
 .clear {clear: both;}
@@ -14,6 +18,8 @@
 .table {display: table;}
 .tr {display: table-row;}
 .td {display: table-cell;}
+
+.oh {overflow: hidden;}
 
 .red {color: red;}
 .green {color: green;}
@@ -74,6 +80,19 @@
 .w900 {width: 900px;}
 .w950 {width: 950px;}
 
+.h50 {height: 50px;}
+.h100 {height: 100px;}
+.h150 {height: 150px;}
+.h200 {height: 200px;}
+.h250 {height: 250px;}
+.h300 {height: 300px;}
+.h350 {height: 350px;}
+.h400 {height: 400px;}
+.h450 {height: 450px;}
+.h500 {height: 500px;}
+
+.mw900 {max-width: 900px;}
+.mh400 {max-height: 400px;}
 
 .p0 {padding: 0;}
 .m0 {margin: 0;}

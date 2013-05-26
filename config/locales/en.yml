@@ -2,4 +2,45 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  models:
+    user: 'user'
+    users: 'users'
+    attributes:
+      avatar: 'Avatar'
+      first_name: 'First name'
+      last_name: 'Last name'
+      login: 'Login'
+      email: 'Email'
+  controllers:
+    actions:
+      show: 'Show'
+      edit: 'Edit'
+      profile: 'Profile'
+      edit_profile: 'Edit profile'
+      update: 'Update'
+      crop_avatar: 'Crop avatar'
+      crop: 'Crop'
+      recrop: 'Recrop'
+  views:
+    layouts:
+      application:
+  avatar:
+    upload_success: 'Avatar successfully uploaded.'
+  auth:
+    sign_out: 'sign out'
+    sign_up: 'sign up'
+    sign_in: 'sign in'
+    register: 'register'
+    current_password_needed: '(we need your current password to confirm your changes)'
+    waiting_confirmation_for: 'Currently waiting confirmation for'
+    leave_blank_password: "(leave blank if you don't want to change it)"
+    cancel_account: 'Cancel my account'
+  errors:
+    messages:
+      not_saved: 'Unsuccessful upload, please try again'
+  general:
+    or: 'or'
+    unhappy: 'Unhappy'
+    are_you_sure: "Are you sure?"
+    back: 'Back'
+    preview: 'Preview'
