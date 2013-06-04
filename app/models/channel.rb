@@ -15,6 +15,15 @@ class Channel < ActiveRecord::Base
   validates :url, feed: true, uniqueness: true
 
 
+  def subscription_name(user)
+    if user and subscription = Subscription.by_user_channel_ids(user.id, id) and !subscription.name.blank?
+      subscription.name
+    else
+      name
+    end
+  end
+
+
   def create_articles
     # no exception handling as we assume that if channel is saved then it has a valid xml
     feed = Feedzirra::Feed.parse(xml).sanitize_entries!

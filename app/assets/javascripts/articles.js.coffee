@@ -11,6 +11,10 @@ $ ->
   nearBottomOfPage = () ->
     return $(window).scrollTop() > $(document).height() - $(window).height() - 100;
 
+  #
+  # add to/remove from favourites
+  #
+
   handle_stars = () ->
     $(".add_to_favourites_link")
       .bind "ajax:success", (e, data, status, xhr) ->
@@ -27,6 +31,10 @@ $ ->
 
   handle_stars()
 
+  #
+  # endless scroll
+  #
+
   page = 1
   total_pages = $('#articles').attr('data-num-pages')
   loading = false
@@ -39,7 +47,7 @@ $ ->
     if nearBottomOfPage() && page < total_pages
       loading = true
       page++
-      $.ajax '/articles?page=' + page,
+      $.ajax $('#data_container').attr('data-path-info') + '?page=' + page,
         type: 'get'
         dataType: 'html'
         success: (data, textStatus, xhr) ->

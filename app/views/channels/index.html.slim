@@ -1,6 +1,14 @@
 - unless request.xhr?
   h1
-    | Channels
+    - if params[:action] == 'index'
+      = I18n.t('general.channels')
+    - elsif params[:action] == 'subscribed'
+      = I18n.t('general.my_channels')
+- if @channels.blank?
+  = I18n.t('general.no_channels')
+
+#data_container.dn[data-path-info="#{request.path_info}"]
+
 #channels[data-num-pages="#{@channels.num_pages}"]
   .page
     = render @channels

@@ -23,6 +23,7 @@ en:
       recrop: 'Recrop'
       subscribe: 'Subscribe'
       unsubscribe: 'Unsubscribe'
+      add: 'Add'
   views:
     layouts:
       application:
@@ -46,5 +47,17 @@ en:
     are_you_sure: "Are you sure?"
     back: 'Back'
     preview: 'Preview'
+    home: 'Home'
+    close: 'Close'
+    recent_news: 'Recent news'
+    favourites: 'Favourites'
+    favourite_articles: 'Favourite articles'
+    channel: 'Channel'
+    channels: 'Channels'
+    my_channels: 'My channels'
+    no_articles: 'No articles found'
+    no_channels: 'No channels found'
+    rename: 'Rename'
+    provide_new_name: 'Provide new name'
   text:
     find_channel: "In order to find channels provide a search string or paste channel's URL-address."

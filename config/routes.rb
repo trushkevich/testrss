@@ -16,7 +16,14 @@ Testrss::Application.routes.draw do
   delete '/subscriptions' => 'subscriptions#destroy', as: :unsubscribe
 
 
-  resources :channels
+  resources :channels do
+    collection do
+      get :subscribed, as: :subscribed
+    end
+    member do
+      get :articles
+    end
+  end
 
 
   devise_for :users, :controllers => {

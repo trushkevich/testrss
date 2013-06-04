@@ -1,27 +1,33 @@
-#sidebar.fl.w300.mr30
+#sidebar.fl.w300
   .subscribe_wrapper.pr
 
     #add_subscription.button.w150.mb30
       = I18n.t('controllers.actions.subscribe')
     #new_subscription_form_wrapper.w250
-      .close[title="Close"]
+      .close[title="#{I18n.t('general.close')}"]
         | x
       = I18n.t('text.find_channel')
       = form_for(:channel, url: channels_path, html: { method: :post, id: 'new_subscription_form', :'data-type' => 'html' }, remote: true) do |f|
         = f.text_field :url, class: 'w200'
-        = f.submit 'Add'
+        = f.submit I18n.t('controllers.actions.add')
       .response
 
     = link_to root_path do
       .sidebar_menu_item
-        | Home page
+        = I18n.t('general.home')
 
     = link_to channels_path do
       .sidebar_menu_item
-        | Channels
+        = I18n.t('general.channels')
+
+    .mb30
+
+    = link_to subscribed_channels_path do
+      .sidebar_menu_item
+        = I18n.t('general.my_channels')
 
     = link_to favourite_articles_path do
       .sidebar_menu_item
-        | Favourites
+        = I18n.t('general.favourites')
 
 

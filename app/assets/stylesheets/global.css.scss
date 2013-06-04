@@ -29,6 +29,10 @@
 .td {display: table-cell;}
 
 .oh {overflow: hidden;}
+.oxh {overflow-x: hidden;}
+.oyh {overflow-y: hidden;}
+.oxv {overflow-x: visible;}
+.oyv {overflow-y: visible;}
 
 .red {color: red;}
 .green {color: green;}
@@ -56,6 +60,7 @@
 .ml30 {margin-left: 30px}
 .ml40 {margin-left: 40px}
 .ml50 {margin-left: 50px}
+.ml330 {margin-left: 330px}
 
 .mr5 {margin-right: 5px}
 .mr10 {margin-right: 10px}
@@ -126,6 +131,7 @@
 
 .h1 {height: 1px;}
 .h50 {height: 50px;}
+.h60 {height: 60px;}
 .h100 {height: 100px;}
 .h150 {height: 150px;}
 .h200 {height: 200px;}
@@ -253,6 +259,19 @@ a.h1 {
   -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
   background-color: #f7f7f7;
   padding: 10px;
+  z-index: 10;
+}
+
+.small_popup_form {
+  position: absolute;
+  left: 0;
+  top: 35px;
+  display: none;
+  border: 2px solid #bbb;
+  -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
+  background-color: #f7f7f7;
+  padding: 10px;
+  z-index: 10;
 }
 
 .close {

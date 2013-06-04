@@ -81,12 +81,15 @@ class ArticlesController < ApplicationController
     end
   end
 
-  # GET /channels/favourite
-  # GET /channels/favourite.json
+  # GET /articles/favourite
+  # GET /articles/favourite.json
   def favourite
     @articles = current_user.favourite_articles.order('published_at DESC').page(params[:page]).per(5)
 
-    render :index
+    render_params = [:index]
+    render_params << {layout: false} if request.xhr?
+
+    render *render_params
   end
 
 

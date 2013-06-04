@@ -1,9 +1,6 @@
 - unless request.xhr?
   h1
-    - if params[:action] == 'index'
-      = I18n.t('general.recent_news')
-    - elsif params[:action] == 'favourite'
-      = I18n.t('general.favourite_articles')
+    = "#{I18n.t('general.channel')} \"#{@channel.subscription_name(current_user)}\""
 - if @articles.blank?
   = I18n.t('general.no_articles')
 

@@ -20,12 +20,13 @@ class SubscriptionsController < ApplicationController
   # PUT /subscriptions/1
   # PUT /subscriptions/1.json
   def update
-    @subscription = Subscription.find(params[:channel_id])
+    @subscription = Subscription.by_user_channel_ids(current_user.id, params[:channel_id])
 
     respond_to do |format|
-      if @subscription.update_attributes(params[:subscription])
+      if @subscription and @subscription.update_attributes(params[:subscription])
+        @channel = Channel.find(params[:channel_id])
         format.html { redirect_to @subscription, notice: 'Subscription was successfully updated.' }
-        format.json { head :no_content }
+        format.json { render json: { name: @channel.subscription_name(current_user) }, status: :ok}
       else
         format.html { render action: "edit" }
         format.json { render json: @subscription.errors, status: :unprocessable_entity }
