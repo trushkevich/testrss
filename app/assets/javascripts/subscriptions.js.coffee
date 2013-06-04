@@ -4,10 +4,6 @@
 
 $ ->
 
-  sorry = () ->
-    $('.modal').html('Sorry, but something went wrong')
-    $('.modal').dialog()
-
   form_wrapper = $('#new_subscription_form_wrapper')
 
   $('#add_subscription').click (event) ->

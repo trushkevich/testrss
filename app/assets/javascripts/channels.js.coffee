@@ -10,6 +10,11 @@ $ ->
   nearBottomOfPage = () ->
     return $(window).scrollTop() > $(document).height() - $(window).height() - 100;
 
+  sorry = () ->
+    $('.modal').html('Sorry, but something went wrong')
+    $('.modal').dialog()
+
+
   handle_subscribe_links = () ->
     $(".subscribe_link")
       .bind "ajax:success", (e, data, status, xhr) ->
