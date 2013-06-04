@@ -1,0 +1,9 @@
+- unless request.xhr?
+  h1
+    - if params[:action] == 'index'
+      | Recent news
+    - elsif params[:action] == 'favourite'
+      | Favourite articles
+#articles[data-num-pages="#{@articles.num_pages}"]
+  .page
+    = render @articles

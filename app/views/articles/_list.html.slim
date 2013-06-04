@@ -1,0 +1,14 @@
+div
+  - if articles.count == 0
+    p
+      | No articles found in this channel.
+    p
+      | Advices
+    ul
+      li
+        | Wait for some time - articles are fetched automatically
+      li
+        | Contact us and tell about a problem
+  - else
+    - articles.each do |article|
+      = render 'articles/article', article: article

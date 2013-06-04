@@ -1,13 +1,21 @@
 header
   .fl.w200
-    h1
-      | RSS Reader
+    = link_to root_url, class: 'h1' do
+      h1
+        | RSS Reader
   .fr
     - if user_signed_in?
-      = image_tag current_user.avatar.url(:tiny), class: 'vam mr10 w50 h50'
-      = link_to current_user.full_name, profile_path
-      = ' | '
-      = link_to 'Sign out', destroy_user_session_path, :method => :delete
+      .w50.h50.oh.mr10.fl
+        - if [:crop, :recrop].include? params[:action].to_sym
+          = image_tag @resource.avatar.url(:pre_crop), id: "preview_header", class: 'vam'
+        - else
+          = image_tag current_user.avatar.url(:tiny), class: 'vam mr10 w50 h50'
+      .fl.vam
+        = image_tag '', class: 'vam w1 h50'
+        = link_to current_user.full_name, profile_path
+        = ' | '
+        = link_to 'Sign out', destroy_user_session_path, :method => :delete
+      .clear
     - else
       = link_to 'Sign in', new_user_session_path
       = ' | '

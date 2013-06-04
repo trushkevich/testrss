@@ -1,4 +1,4 @@
-doctype
+doctype 5
 html
   head
     meta[http-equiv="Content-Type" content="text/html; charset=utf-8"]
@@ -9,8 +9,12 @@ html
     = javascript_include_tag "application"
     = csrf_meta_tags
   body
-    #body_wrapper
+    #body_wrapper.minw960
       = render :partial => 'layouts/header'
       #main_wrapper
-        = yield
+        = render :partial => 'layouts/sidebar'
+        #main.oh
+          = yield
+        .clear
       = render :partial => 'layouts/footer'
+    .modal.dn

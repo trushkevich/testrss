@@ -21,6 +21,8 @@ en:
       crop_avatar: 'Crop avatar'
       crop: 'Crop'
       recrop: 'Recrop'
+      subscribe: 'Subscribe'
+      unsubscribe: 'Unsubscribe'
   views:
     layouts:
       application:
@@ -44,3 +46,5 @@ en:
     are_you_sure: "Are you sure?"
     back: 'Back'
     preview: 'Preview'
+  text:
+    find_channel: "In order to find channels provide a search string or paste channel's URL-address."

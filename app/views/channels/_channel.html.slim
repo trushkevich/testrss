@@ -1,0 +1,12 @@
+.channel.pb10.pt10
+  .w150.fl
+    = link_to unsubscribe_path(channel_id: channel.id), method: :delete, :'data-type' => :json, class: "subscribe_link#{(current_user.channels.include? channel) ? '' : ' dn'}", remote: true do
+      .button.red.fl.small
+        = I18n.t("controllers.actions.unsubscribe")
+    = link_to subscribe_path(channel_id: channel.id), method: :post, :'data-type' => :json, class: "unsubscribe_link#{(!current_user.channels.include? channel) ? '' : ' dn'}", remote: true do
+      .button.green.fl.small
+        = I18n.t("controllers.actions.subscribe")
+  .fl
+    .bold.font_120
+      = link_to channel.name, channel.url
+  .clear

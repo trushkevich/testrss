@@ -1,0 +1,6 @@
+- unless request.xhr?
+  h1
+    | Channels
+#channels[data-num-pages="#{@channels.num_pages}"]
+  .page
+    = render @channels

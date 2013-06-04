@@ -1,0 +1,16 @@
+div
+  - if channels.count == 0
+    p
+      | No channels found to be corresponding with the search query.
+    p
+      | Advices
+    ul
+      li
+        | Ensure that all words are correct
+      li
+        | Try to use other keywords
+      li
+        | Try to use more general keywords
+  - else
+    - channels.each do |channel|
+      = render 'channels/channel', channel: channel

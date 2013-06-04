@@ -1,0 +1,15 @@
+.article.mb30
+  .fl.w50
+    - params = {favouritable_id: article.id, favouritable_type: 'article'}
+    = link_to remove_from_favourites_path(params), method: :delete, :'data-type' => :json, class: "remove_from_favourites_link#{(current_user.favourite_articles.include? article) ? '' : ' dn'}", remote: true do
+      .star
+    = link_to add_to_favourites_path(params), method: :post, :'data-type' => :json, class: "add_to_favourites_link#{(!current_user.favourite_articles.include? article) ? '' : ' dn'}", remote: true do
+      .star_empty
+  .fr.ml50.mt-30
+    .h2
+      = link_to article.title, article.link
+    .mt5
+      = article.description.html_safe
+    .mt5.gray
+      = article.published_at.strftime('%d.%m.%Y %H:%M')
+  .clear

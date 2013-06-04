@@ -1,24 +1,43 @@
 Testrss::Application.routes.draw do
 
+  post '/favourites' => 'favourites#add_to_favourites', as: :add_to_favourites
+  delete '/favourites' => 'favourites#remove_from_favourites', as: :remove_from_favourites
+
+
+  resources :articles do
+    collection do
+      get :favourite, as: :favourite
+    end
+  end
+
+
+  post '/subscriptions' => 'subscriptions#create', as: :subscribe
+  put '/subscriptions/:channel_id' => 'subscriptions#update', as: :update_subscription
+  delete '/subscriptions' => 'subscriptions#destroy', as: :unsubscribe
+
+
+  resources :channels
+
+
   devise_for :users, :controllers => {
     :omniauth_callbacks => "omniauth_callbacks",
     :registrations => "registrations",
   }
 
   devise_scope :user do
-    put '/users', :to => 'registrations#update', :as => :update_user_registration
-    get '/users/crop', :to => 'registrations#crop', :as => :crop
-    get '/users/recrop', :to => 'registrations#recrop', :as => :recrop
-    get '/users/profile', :to => 'registrations#show', :as => :profile
-    get '/crop', :to => 'registrations#crop', :as => :user_crop
-    get '/profile', :to => 'registrations#show', :as => :user_root
+    put '/users' => 'registrations#update', as: :update_user_registration
+    get '/users/crop' => 'registrations#crop', as: :crop
+    get '/users/recrop' => 'registrations#recrop', as: :recrop
+    get '/users/profile' => 'registrations#show', as: :profile
+    get '/crop' => 'registrations#crop', as: :user_crop
+    get '/profile' => 'registrations#show', as: :user_root
   end
 
   # resources :users
 
   get "site/index"
 
-  root :to => 'site#index'
+  root to: 'articles#index'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -28,7 +47,7 @@ Testrss::Application.routes.draw do
   # Keep in mind you can assign values other than :controller and :action
 
   # Sample of named route:
-  #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
+  #   match 'products/:id/purchase' => 'catalog#purchase', as: :purchase
   # This route can be invoked with purchase_url(:id => product.id)
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
@@ -69,7 +88,7 @@ Testrss::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  # root :to => 'welcome#index'
+  # root to: 'welcome#index'
 
   # See how all your routes lay out with "rake routes"
 

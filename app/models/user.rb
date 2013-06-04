@@ -1,10 +1,14 @@
 class User < ActiveRecord::Base
 
+  MAX_CHANNELS_BASIC = 10  
+  MAX_CHANNELS_MEDIUM = 20  
+  MAX_CHANNELS_PREMIUM = 100  
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable,
-         :confirmable, :omniauthable, :omniauth_providers => [:google_oauth2, :twitter]
+         :confirmable, :omniauthable, omniauth_providers: [:google_oauth2, :twitter]
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :first_name, :last_name, :login, :password, :password_confirmation, :remember_me,
@@ -13,25 +17,32 @@ class User < ActiveRecord::Base
   attr_accessor :meta_login, :crop_x, :crop_y, :crop_w, :crop_h
 
   has_attached_file :avatar,
-    :url => "/assets/:class/:attachment/:id/:style/:hash.:extension",
-    :path => ":rails_root/app/assets/images/:class/:attachment/:id/:style/:hash.:extension",
-    :hash_secret => "udhg72gu2f9273ggf2hf823f2",
-    :styles => { 
-      :pre_crop   => ["500x500>", :png],
-      :large   => ["400x400#", :png],
-      :medium  => ["200x200#", :png],
-      :small   => ["100x100#", :png],
-      :tiny    => ["50x50#", :png],
+    url: "/assets/:class/:attachment/:id/:style/:hash.:extension",
+    path: ":rails_root/app/assets/images/:class/:attachment/:id/:style/:hash.:extension",
+    hash_secret: "udhg72gu2f9273ggf2hf823f2",
+    styles: { 
+      pre_crop: ["500x500>", :png],
+      large:    ["400x400#", :png],
+      medium:   ["200x200#", :png],
+      small:    ["100x100#", :png],
+      tiny:     ["50x50#", :png],
     },
-    :processors => [:cropper],
-    :default_url => "/assets/missing_avatar.png"
+    processors: [:cropper],
+    default_url: "/assets/missing_avatar.png"
 
-  validates :first_name, :length => { :maximum => 50 }, :presence => true
-  validates :last_name, :length => { :maximum => 50 }, :presence => true
-  validates :login, :length => { :maximum => 50 }, :presence => true, :uniqueness => true
-  validates :profile_type, :inclusion=> { :in => %w(basic medium premium) }, :presence => true
-  validates_attachment_content_type :avatar, :content_type => ['image/jpeg', 'image/png', 'image/gif', 'image/pjpeg', 'image/x-png'] #last two for IE 6-8
-  validates_attachment_size :avatar, :less_than => 1.megabyte
+  has_many :subscriptions
+  has_many :channels, through: :subscriptions
+  has_many :articles, through: :channels
+  has_many :favourites
+  has_many :favourite_articles, through: :favourites, source: :favouritable, source_type: 'Article'
+
+
+  validates :first_name, length: { maximum: 50 }, presence: true
+  validates :last_name, length: { maximum: 50 }, presence: true
+  validates :login, length: { maximum: 50 }, presence: true, uniqueness: true
+  validates :profile_type, inclusion: { in: %w(basic medium premium) }, presence: true
+  validates_attachment_content_type :avatar, content_type: ['image/jpeg', 'image/png', 'image/gif', 'image/pjpeg', 'image/x-png'] #last two for IE 6-8
+  validates_attachment_size :avatar, less_than: 1.megabyte
 
 
   def full_name
@@ -41,12 +52,16 @@ class User < ActiveRecord::Base
   def max_channels
     case profile_type
     when 'basic'
-      10
+      MAX_CHANNELS_BASIC
     when 'medium'
-      20
+      MAX_CHANNELS_MEDIUM
     when 'premium'
-      100
+      MAX_CHANNELS_PREMIUM
     end
+  end
+
+  def max_channels_reached?
+    channels.count >= max_channels
   end
 
   #############################
@@ -69,7 +84,7 @@ class User < ActiveRecord::Base
     conditions = warden_conditions.dup
 
     if meta_login = conditions.delete(:meta_login)
-      where(conditions).where(["lower(login) = :value OR lower(email) = :value", { :value => meta_login.downcase }]).first
+      where(conditions).where(["lower(login) = :value OR lower(email) = :value", { value: meta_login.downcase }]).first
     else
       where(conditions).first
     end
