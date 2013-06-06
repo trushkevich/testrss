@@ -92,5 +92,36 @@ class ArticlesController < ApplicationController
     render *render_params
   end
 
+  # GET /articles/1/comments
+  # GET /articles/1/comments.json
+  def comments
+    @article = Article.find(params[:id])
+    @comments = @article.comments
+
+    respond_to do |format|
+      format.html 
+      format.json { render json: @comments, status: :ok }
+    end
+  end
+
+  # POST /articles/1/add_comment
+  # POST /articles/1/add_comment.json
+  def add_comment
+    @article = Article.find(params[:id])
+    
+    respond_to do |format|
+      if comment = @article.comments.create(params[:comment].merge(user_id: current_user.id))
+        format.html { redirect_to @article, notice: 'Comment successfully added.' }
+        rendered_comments = ''
+        @article.comments.each do |comment|
+          rendered_comments << render_to_string('articles/_comment', :layout => false, :locals => {comment: comment})
+        end
+        format.json { render json: { comments: rendered_comments, count: @article.comments.count } }
+      else
+        format.html { render action: "edit" }
+        format.json { render json: false, status: :unprocessable_entity }
+      end
+    end
+  end
 
 end

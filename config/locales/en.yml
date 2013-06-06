@@ -24,6 +24,7 @@ en:
       subscribe: 'Subscribe'
       unsubscribe: 'Unsubscribe'
       add: 'Add'
+      cancel: 'Cancel'
   views:
     layouts:
       application:
@@ -59,5 +60,10 @@ en:
     no_channels: 'No channels found'
     rename: 'Rename'
     provide_new_name: 'Provide new name'
+    comments: 'Comments'
+    show_comments: 'Show comments'
+    hide_comments: 'Hide comments'
+    add_comment: 'Add a comment'
+    provide_your_comment: 'Provide your comment'
   text:
     find_channel: "In order to find channels provide a search string or paste channel's URL-address."

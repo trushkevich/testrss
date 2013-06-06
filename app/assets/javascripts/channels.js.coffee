@@ -20,12 +20,14 @@ $ ->
     $(".subscribe_link")
       .bind "ajax:success", (e, data, status, xhr) ->
         $(this).parent().find('.unsubscribe_link').show()
+        $(this).parent().find('.rename_channel_wrapper').show()
         $(this).hide()
       .bind "ajax:error", (e, xhr, status, error) ->
         sorry()
     $(".unsubscribe_link")
       .bind "ajax:success", (e, data, status, xhr) ->
         $(this).parent().find('.subscribe_link').show()
+        $(this).parent().find('.rename_channel_wrapper').hide()
         $(this).hide()
       .bind "ajax:error", (e, xhr, status, error) ->
         sorry()
@@ -91,4 +93,3 @@ $ ->
   $('html').click -> 
     $('.rename_channel_form_wrapper').hide()
 
-    

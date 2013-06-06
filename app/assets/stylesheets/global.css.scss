@@ -60,6 +60,7 @@
 .ml30 {margin-left: 30px}
 .ml40 {margin-left: 40px}
 .ml50 {margin-left: 50px}
+.ml60 {margin-left: 60px}
 .ml330 {margin-left: 330px}
 
 .mr5 {margin-right: 5px}
@@ -250,18 +251,6 @@ a.h1 {
   }
 }
 
-#new_subscription_form_wrapper {
-  position: absolute;
-  left: 0;
-  top: 35px;
-  display: none;
-  border: 2px solid #bbb;
-  -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
-  background-color: #f7f7f7;
-  padding: 10px;
-  z-index: 10;
-}
-
 .small_popup_form {
   position: absolute;
   left: 0;
@@ -295,7 +284,7 @@ a.h1 {
     text-decoration: none;
   }
   & .sidebar_menu_item {
-    width: 200px;
+    width: 300px;
     padding: 5px 0 5px 10px;
     font-size: 110%;
   }

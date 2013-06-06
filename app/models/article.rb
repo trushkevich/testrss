@@ -8,4 +8,7 @@ class Article < ActiveRecord::Base
   validates :channel_id, presence: true 
   validates :link, presence: true 
   validates :title, presence: true 
+
+  acts_as_commentable
+  
 end

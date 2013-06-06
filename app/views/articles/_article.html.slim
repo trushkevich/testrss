@@ -1,4 +1,4 @@
-.article.mb30
+.article.mb30[data-article-id="#{article.id}"]
   .fl.w50
     - params = {favouritable_id: article.id, favouritable_type: 'article'}
     = link_to remove_from_favourites_path(params), method: :delete, :'data-type' => :json, class: "remove_from_favourites_link#{(current_user.favourite_articles.include? article) ? '' : ' dn'}", remote: true do
@@ -11,5 +11,29 @@
     .mt5
       = article.description.html_safe
     .mt5.gray
-      = article.published_at.strftime('%d.%m.%Y %H:%M')
+      = format_date article.published_at
+      span.ml5.mr5
+        ||
+      = link_to I18n.t('general.show_comments'), '', class: 'gray show_comments', remote: true
+      = " ("
+      span.comments_count
+        = "#{article.comments.count}"
+      = ")"
+      span.ml5.mr5
+        ||
+      = link_to I18n.t('general.add_comment'), add_comment_article_path(article), class: 'gray add_comment_link', :'data-type' => 'json', remote: true
   .clear
+
+  .comments.ml60.mt5.dn
+    - article.comments.each do |comment|
+      = render partial: 'articles/comment', locals: {comment: comment}
+
+  .add_article_comment_form_wrapper.ml50.dn[data-title="#{I18n.t('general.add_comment')}" data-submit="#{I18n.t('controllers.actions.add')}" data-article-id="#{article.id}"]
+    h4
+      = I18n.t('general.provide_your_comment')+':'
+    = form_for(:comment, url: add_comment_article_path(article), html: { method: :post, :'data-type' => 'json' }, remote: true) do |f|
+      = f.text_area :comment, rows: 5, class: 'w600'
+      br
+      = f.submit I18n.t('controllers.actions.add')
+      = f.button I18n.t('controllers.actions.cancel'), type: :button
+    .response
