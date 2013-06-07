@@ -1,9 +1,10 @@
+require 'feedzirra'
+
 class Channel < ActiveRecord::Base
   include ActiveModel::Validations
 
   STATUS_SUBSCRIBED = 'subscribed'
   STATUS_EXISTS = 'exists'
-  STATUS_CREATED = 'created'
   STATUS_SEARCHED = 'searched'
 
   attr_accessible :url, :name, :xml
@@ -21,24 +22,6 @@ class Channel < ActiveRecord::Base
     else
       name
     end
-  end
-
-
-  def create_articles
-    # no exception handling as we assume that if channel is saved then it has a valid xml
-    feed = Feedzirra::Feed.parse(xml).sanitize_entries!
-    fetched_articles = []
-    feed.entries.each do |entry|
-      article = Article.new(
-        channel_id: id,
-        description: entry.summary,
-        link: entry.url,
-        published_at: entry.published,
-        title: entry.title,
-      )
-     fetched_articles << article if article.save
-    end
-    {status: STATUS_CREATED, articles: fetched_articles}
   end
 
 
@@ -75,5 +58,34 @@ class Channel < ActiveRecord::Base
     where(where_query).all
   end
 
+
+  # to be run as a rake task
+  def self.update_feeds
+    puts "\nFeeds update started at #{Time.now}"
+    all.each do |channel|
+      feed = Feedzirra::Feed.parse(channel.xml)
+      # way to DRY up the code a bit and to validate if a new feed is valid at the same time
+      # here runs FeedValidator#validate_each
+      if channel.update_attributes(url: channel.url)
+        new_feed = Feedzirra::Feed.parse(channel.xml)
+        feed.update_from_feed(new_feed)
+        if feed.updated?
+          puts "#{Time.now} > Channel id=#{channel.id}: #{feed.new_entries.count} new articles"
+          feed.new_entries.each_with_index do |entry, i|
+            if Article.create_by_entry(channel, entry)
+              puts "#{Time.now} > article ##{i} successfully created"
+            else
+              puts "#{Time.now} ERROR > failed to create article ##{i}\n#{entry.inspect}"
+            end
+          end
+        else
+          puts "#{Time.now} > Channel id=#{channel.id}: no new articles"
+        end
+      else
+        puts "#{Time.now} ERROR > Channel id=#{channel.id}: update failed due to feed validaion."
+      end
+    end
+    puts "Feeds update finished at #{Time.now}\n"
+  end
 
 end

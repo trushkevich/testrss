@@ -14,6 +14,7 @@ gem 'paperclip', "~> 3.4.2"
 gem 'feedzirra', "~> 0.0.24"
 gem 'kaminari', "~> 0.14.1"
 gem 'acts_as_commentable', '3.0.1'
+gem 'whenever', :require => false
 
 # Gems used only for assets and not required
 # in production environments by default.

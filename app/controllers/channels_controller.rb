@@ -48,7 +48,7 @@ class ChannelsController < ApplicationController
         # if channel is created it means that it is newly added channel and we need to
         # subscribe a user for it and parse channel name and articles
         current_user.channels << @channel
-        data = @channel.create_articles
+        data = Article.create_by_channel(@channel)
       else
         # if a channel is not created it means that it is either a not valid feed (ie search string)
         # or the channel already exists
