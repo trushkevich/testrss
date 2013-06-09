@@ -1,14 +1,17 @@
-- unless request.xhr?
+- if request.xhr?
+  .page
+    = render @articles
+- else
   h1
     - if params[:action] == 'index'
       = I18n.t('general.recent_news')
     - elsif params[:action] == 'favourite'
       = I18n.t('general.favourite_articles')
-- if @articles.blank?
-  = I18n.t('general.no_articles')
+  - if @articles.blank?
+    = I18n.t('general.no_articles')
 
-#data_container.dn[data-path-info="#{request.path_info}"]
+  #data_container.dn[data-path-info="#{request.path_info}"]
 
-#articles[data-num-pages="#{@articles.num_pages}"]
-  .page
-    = render @articles
+  #articles[data-num-pages="#{@articles.num_pages}"]
+    .page
+      = render @articles

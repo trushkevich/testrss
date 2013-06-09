@@ -5,7 +5,7 @@
       .star
     = link_to add_to_favourites_path(params), method: :post, :'data-type' => :json, class: "add_to_favourites_link#{(!current_user.favourite_articles.include? article) ? '' : ' dn'}", remote: true do
       .star_empty
-  .fr.ml50.mt-30
+  .fl.w700
     .h2
       = link_to article.title, article.link
     .mt5

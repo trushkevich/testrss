@@ -29,9 +29,11 @@ class FeedValidator < UrlValidator
           else
             # if attribute is valid RSS or Atom feed then we store xml in database at the moment
             # in order not to send another unnecessary feed server request, and also set record
-            # name in order not to make additional db request
+            # name in order not to make additional db request, and also normalize attribute in order 
+            # not to create to different channels for www and http://www
             record.xml = response.body
             record.name = feed.title
+            record.url = value
           end
         end
       end

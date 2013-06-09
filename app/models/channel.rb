@@ -69,8 +69,8 @@ class Channel < ActiveRecord::Base
       if channel.update_attributes(url: channel.url)
         new_feed = Feedzirra::Feed.parse(channel.xml)
         feed.update_from_feed(new_feed)
-        if feed.updated?
-          puts "#{Time.now} > Channel id=#{channel.id}: #{feed.new_entries.count} new articles"
+        if feed.new_entries.count > 0
+          puts "#{Time.now} > Channel id=#{channel.id}: #{feed.new_entries.count} new article(s)"
           feed.new_entries.each_with_index do |entry, i|
             if Article.create_by_entry(channel, entry)
               puts "#{Time.now} > article ##{i} successfully created"

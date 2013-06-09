@@ -1,11 +1,14 @@
-- unless request.xhr?
-  h1
-    = "#{I18n.t('general.channel')} \"#{@channel.subscription_name(current_user)}\""
-- if @articles.blank?
-  = I18n.t('general.no_articles')
-
-#data_container.dn[data-path-info="#{request.path_info}"]
-
-#articles[data-num-pages="#{@articles.num_pages}"]
+- if request.xhr?
   .page
     = render @articles
+- else
+  h1
+    = "#{I18n.t('general.channel')} \"#{@channel.subscription_name(current_user)}\""
+  - if @articles.blank?
+    = I18n.t('general.no_articles')
+
+  #data_container.dn[data-path-info="#{request.path_info}"]
+
+  #articles[data-num-pages="#{@articles.num_pages}"]
+    .page
+      = render @articles

@@ -21,7 +21,7 @@ class Article < ActiveRecord::Base
     feed = Feedzirra::Feed.parse(channel.xml).sanitize_entries!
     fetched_articles = []
     feed.entries.each do |entry|
-      article = create_by_entry(entry)
+      article = create_by_entry(channel, entry)
       fetched_articles << article if article
     end
     {status: STATUS_CREATED, articles: fetched_articles}
