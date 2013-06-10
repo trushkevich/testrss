@@ -4,10 +4,9 @@ class ChannelMailer < ActionMailer::Base
   add_template_helper(ApplicationHelper)
 
 
-  def recent_feeds_email(user)
-    @user = user
+  def recent_feeds_email
     @recent_feeds = Channel.order('updated_at DESC').limit(5)
-    mail(:to => user.email,
+    mail(:to => User.with_email.all.map(&:email),
          :subject => I18n.t('mailers.channel_mailer.recent_feeds_email.subject'))
   end
 

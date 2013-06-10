@@ -96,10 +96,7 @@ class Channel < ActiveRecord::Base
   # to be run as a rake task
   def self.notify_users
     puts "\nRecent feeds distribution started at #{Time.now}"
-    User.with_email.all.each do |user|
-      ChannelMailer.recent_feeds_email(user).deliver
-      puts "#{Time.now} > User id=#{user.id}: recent feeds email sent"
-    end
+    ChannelMailer.recent_feeds_email.deliver
     puts "\nRecent feeds finished at #{Time.now}"
   end
 
