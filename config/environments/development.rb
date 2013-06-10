@@ -37,7 +37,6 @@ Testrss::Application.configure do
 
   config.active_support.deprecation = :log
 
-  # Devise requirement
   config.action_mailer.default_url_options = { :host => 'testrss.loc' }
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true

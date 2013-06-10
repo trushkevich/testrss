@@ -42,6 +42,10 @@ en:
   errors:
     messages:
       not_saved: 'Unsuccessful upload, please try again'
+  mailers:
+    channel_mailer:
+      recent_feeds_email:
+        subject: 'Recent feeds at testrss.loc'
   general:
     or: 'or'
     unhappy: 'Unhappy'

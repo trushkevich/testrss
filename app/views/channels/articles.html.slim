@@ -2,8 +2,8 @@
   .page
     = render @articles
 - else
-  h1
-    = "#{I18n.t('general.channel')} \"#{@channel.subscription_name(current_user)}\""
+  - content_for(:h1) do
+    - "#{I18n.t('general.channel')} \"#{@channel.subscription_name(current_user)}\""
   - if @articles.blank?
     = I18n.t('general.no_articles')
 

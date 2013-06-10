@@ -1,9 +1,9 @@
 - unless request.xhr?
-  h1
+  - content_for(:h1) do
     - if params[:action] == 'index'
-      = I18n.t('general.channels')
+      - I18n.t('general.channels')
     - elsif params[:action] == 'subscribed'
-      = I18n.t('general.my_channels')
+      - I18n.t('general.my_channels')
 - if @channels.blank?
   = I18n.t('general.no_channels')
 

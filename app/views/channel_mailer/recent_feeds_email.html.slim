@@ -1,0 +1,9 @@
+h1
+  = I18n.t('mailers.channel_mailer.recent_feeds_email.subject')
+
+- @recent_feeds.each do |channel|
+  h2
+    = link_to channel.name, articles_channel_url(channel)
+  - channel.recent(3).each do |article|
+    = render partial: 'articles/article_compact', locals: {article: article}
+    br

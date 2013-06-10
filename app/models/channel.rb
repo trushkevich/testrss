@@ -25,6 +25,11 @@ class Channel < ActiveRecord::Base
   end
 
 
+  def recent(limit)
+    articles.order('published_at DESC').limit(limit)
+  end
+
+
   def self.subscribe_or_find(user, search)
     channel = where(url: search).first
     if channel and !user.channels.include? channel and !user.max_channels_reached?
@@ -86,6 +91,16 @@ class Channel < ActiveRecord::Base
       end
     end
     puts "Feeds update finished at #{Time.now}\n"
+  end
+
+  # to be run as a rake task
+  def self.notify_users
+    puts "\nRecent feeds distribution started at #{Time.now}"
+    User.with_email.all.each do |user|
+      ChannelMailer.recent_feeds_email(user).deliver
+      puts "#{Time.now} > User id=#{user.id}: recent feeds email sent"
+    end
+    puts "\nRecent feeds finished at #{Time.now}"
   end
 
 end

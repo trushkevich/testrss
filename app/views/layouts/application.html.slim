@@ -13,8 +13,15 @@ html
       = render :partial => 'layouts/header'
       #main_wrapper
         = render :partial => 'layouts/sidebar'
-        #main.ml330
-          = yield
-        .clear
+        #main.fl
+          #main_h1
+            - if content_for?(:h1)
+              h1
+                = yield(:h1)
+          #main_flash
+            = render partial: 'shared/flash', locals: { flash: flash }
+          #main_content
+            = yield
+      .clear
       = render :partial => 'layouts/footer'
     .modal.dn

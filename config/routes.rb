@@ -1,5 +1,7 @@
 Testrss::Application.routes.draw do
 
+  get "search/index"
+
   post '/favourites' => 'favourites#add_to_favourites', as: :add_to_favourites
   delete '/favourites' => 'favourites#remove_from_favourites', as: :remove_from_favourites
 
@@ -47,6 +49,11 @@ Testrss::Application.routes.draw do
   # resources :users
 
   get "site/index"
+
+
+
+  match '*path', :to => 'application#routing_error'
+
 
   root to: 'articles#index'
 

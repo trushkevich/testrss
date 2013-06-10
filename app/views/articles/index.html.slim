@@ -2,11 +2,11 @@
   .page
     = render @articles
 - else
-  h1
+  - content_for(:h1) do
     - if params[:action] == 'index'
-      = I18n.t('general.recent_news')
+      - I18n.t('general.recent_news')
     - elsif params[:action] == 'favourite'
-      = I18n.t('general.favourite_articles')
+      - I18n.t('general.favourite_articles')
   - if @articles.blank?
     = I18n.t('general.no_articles')
 

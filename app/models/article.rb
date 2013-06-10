@@ -39,4 +39,25 @@ class Article < ActiveRecord::Base
     article.save ? article : nil
   end
 
+
+  def self.find_by_title_or_description(search)
+    articles_table = arel_table
+
+    search_parts = search.split(' ')
+    first_part = search_parts.shift
+
+    search_by_part = ->(search) do
+      articles_table[:title].matches("%#{first_part}%").or(
+        articles_table[:description].matches("%#{first_part}%")
+      )
+    end
+
+    where_query = search_by_part.call(first_part)
+    search_parts.each do |search_part|
+      where_query = where_query.and(search_by_part.call(search_part))
+    end
+
+    where(where_query).all
+  end
+
 end

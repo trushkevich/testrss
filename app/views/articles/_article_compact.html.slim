@@ -1,0 +1,7 @@
+.article
+  .h2
+    = link_to article.title, article.link
+  .mt5
+    = article.description.html_safe
+  .mt5.gray
+    = format_date article.published_at

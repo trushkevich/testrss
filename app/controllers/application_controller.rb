@@ -1,8 +1,11 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
+  def routing_error
+    flash[:alert] = "Requested page not found."
+    redirect_to root_url
+  end
 
-  private
 
   def render_404
     respond_to do |format|
@@ -10,4 +13,5 @@ class ApplicationController < ActionController::Base
       format.json  { head :not_found }
     end
   end
+
 end

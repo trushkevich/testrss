@@ -27,3 +27,7 @@ set :output, log
 every 5.minutes do
   rake "cron:channels:update"
 end
+
+every 1.day, :at => '3:00 am' do
+  rake "cron:channels:notify_users"
+end

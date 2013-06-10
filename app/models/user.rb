@@ -36,6 +36,7 @@ class User < ActiveRecord::Base
   has_many :favourites
   has_many :favourite_articles, through: :favourites, source: :favouritable, source_type: 'Article'
 
+  scope :with_email, lambda { where("email <> ?", '' ) }
 
   validates :first_name, length: { maximum: 50 }, presence: true
   validates :last_name, length: { maximum: 50 }, presence: true
