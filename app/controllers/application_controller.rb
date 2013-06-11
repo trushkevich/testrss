@@ -14,4 +14,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
+
+  private
+
+  def render_pagination(items, controller, action, partial = 'shared/_pagination.html.slim')
+    render_to_string 'shared/_pagination.html.slim', layout: false, locals: {items: items, controller: controller, action: action}
+  end
+
 end

@@ -4,13 +4,6 @@
 
 $ ->
 
-  sorry = () ->
-    $('.modal').html('Sorry, but something went wrong')
-    $('.modal').dialog()
-
-  nearBottomOfPage = () ->
-    return $(window).scrollTop() > $(document).height() - $(window).height() - 100;
-
   #
   # add to/remove from favourites
   #
@@ -21,13 +14,13 @@ $ ->
         $(this).parent().find('.remove_from_favourites_link').show()
         $(this).hide()
       .bind "ajax:error", (e, xhr, status, error) ->
-        sorry()
+        global.sorry()
     $(".remove_from_favourites_link")
       .bind "ajax:success", (e, data, status, xhr) ->
         $(this).parent().find('.add_to_favourites_link').show()
         $(this).hide()
       .bind "ajax:error", (e, xhr, status, error) ->
-        sorry()
+        global.sorry()
 
   handle_stars()
 
@@ -44,7 +37,7 @@ $ ->
     if loading
       return
 
-    if nearBottomOfPage() && page < total_pages
+    if global.near_bottom_of_page() && page < total_pages
       loading = true
       page++
       $.ajax $('#data_container').attr('data-path-info') + '?page=' + page,
@@ -80,7 +73,7 @@ $ ->
           form.find('input[type="text"], textarea').val('')
           form_wrapper.slideUp(100)
         .bind "ajax:error", (e, xhr, status, error) ->
-          sorry()
+          global.sorry()
       event.stopPropagation()
       return false
 

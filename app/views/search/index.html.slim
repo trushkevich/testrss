@@ -1,0 +1,19 @@
+- content_for(:h1) do
+  - I18n.t('controllers.actions.search')
+
+p
+  = I18n.t('views.search.description')
+= form_tag '/search', :'data-type' => 'json', method: :get, id: 'search_form', remote: true do
+  = text_field_tag :search, @search, class: 'mr10 w600'
+  = submit_tag I18n.t('controllers.actions.search')
+
+h2.found_channels.dn
+  = I18n.t('general.found_channels')
+#channels_wrapper
+
+h2.found_articles.dn
+  = I18n.t('general.found_articles')
+#articles_wrapper
+
+h2.nothing_found.dn
+  = I18n.t('text.nothing_found')

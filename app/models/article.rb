@@ -41,6 +41,7 @@ class Article < ActiveRecord::Base
 
 
   def self.find_by_title_or_description(search)
+    return [] if search.blank?
     articles_table = arel_table
 
     search_parts = search.split(' ')

@@ -4,14 +4,6 @@
 
 $ ->
 
-  nearBottomOfPage = () ->
-    return $(window).scrollTop() > $(document).height() - $(window).height() - 100;
-
-  sorry = () ->
-    $('.modal').html('Sorry, but something went wrong')
-    $('.modal').dialog()
-
-
   #
   # subscribe/unsubscribe links
   #
@@ -23,14 +15,14 @@ $ ->
         $(this).parent().find('.rename_channel_wrapper').show()
         $(this).hide()
       .bind "ajax:error", (e, xhr, status, error) ->
-        sorry()
+        global.sorry()
     $(".unsubscribe_link")
       .bind "ajax:success", (e, data, status, xhr) ->
         $(this).parent().find('.subscribe_link').show()
         $(this).parent().find('.rename_channel_wrapper').hide()
         $(this).hide()
       .bind "ajax:error", (e, xhr, status, error) ->
-        sorry()
+        global.sorry()
 
   handle_subscribe_links()
 
@@ -47,7 +39,7 @@ $ ->
     if loading
       return
 
-    if nearBottomOfPage() && page < total_pages
+    if global.near_bottom_of_page() && page < total_pages
       loading = true
       page++
       $.ajax $('#data_container').attr('data-path-info') + '?page=' + page,

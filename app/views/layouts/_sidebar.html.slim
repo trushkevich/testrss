@@ -20,6 +20,10 @@
       .sidebar_menu_item
         = I18n.t('general.channels')
 
+    = link_to search_path do
+      .sidebar_menu_item
+        = I18n.t('controllers.actions.search')
+
     .mb30
 
     = link_to subscribed_channels_path do

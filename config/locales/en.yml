@@ -25,9 +25,12 @@ en:
       unsubscribe: 'Unsubscribe'
       add: 'Add'
       cancel: 'Cancel'
+      search: 'Search'
   views:
     layouts:
       application:
+    search:
+      description: 'Search for channels and articles:'
   avatar:
     upload_success: 'Avatar successfully uploaded.'
   auth:
@@ -69,5 +72,8 @@ en:
     hide_comments: 'Hide comments'
     add_comment: 'Add a comment'
     provide_your_comment: 'Provide your comment'
+    found_channels: 'Found channels'
+    found_articles: 'Found articles'
   text:
     find_channel: "In order to find channels provide a search string or paste channel's URL-address."
+    nothing_found: 'Nothing found for the provided search query'

@@ -1,6 +1,9 @@
 Testrss::Application.routes.draw do
 
-  get "search/index"
+  get "search" => 'search#index', as: :search
+  get "search/channels_page"
+  get "search/articles_page"
+
 
   post '/favourites' => 'favourites#add_to_favourites', as: :add_to_favourites
   delete '/favourites' => 'favourites#remove_from_favourites', as: :remove_from_favourites

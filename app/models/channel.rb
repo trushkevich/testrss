@@ -44,6 +44,7 @@ class Channel < ActiveRecord::Base
 
 
   def self.find_by_url_or_name(search)
+    return [] if search.blank?
     channels_table = arel_table
 
     search_parts = search.split(' ')
