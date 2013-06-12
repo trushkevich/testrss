@@ -1,16 +1,22 @@
 div
-  - if channels.count == 0
+  - if channels.blank?
     p
-      | No channels found to be corresponding with the search query.
+      = I18n.t('text.no_channels_found')
     p
-      | Advices
+      = I18n.t('general.advices')
     ul
       li
-        | Ensure that all words are correct
+        = I18n.t('text.ensure_words_correct')
       li
-        | Try to use other keywords
+        = I18n.t('text.try_other_keywords')
       li
-        | Try to use more general keywords
+        = I18n.t('text.try_general_keywords')
   - else
-    - channels.each do |channel|
-      = render 'channels/channel', channel: channel
+    h2
+      = I18n.t('general.found_channels')
+
+    #data_container.dn[data-path-info="#{channels_page_path(search: search)}"]
+
+    #channels[data-num-pages="#{channels.num_pages}"]
+      .page
+        = render channels

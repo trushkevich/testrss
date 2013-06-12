@@ -1,8 +1,8 @@
 Testrss::Application.routes.draw do
 
   get "search" => 'search#index', as: :search
-  get "search/channels_page"
-  get "search/articles_page"
+  get "search/channels_page" => 'search#channels_page', as: :channels_page
+  get "search/articles_page" => 'search#articles_page', as: :articles_page
 
 
   post '/favourites' => 'favourites#add_to_favourites', as: :add_to_favourites

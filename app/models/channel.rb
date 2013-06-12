@@ -6,6 +6,7 @@ class Channel < ActiveRecord::Base
   STATUS_SUBSCRIBED = 'subscribed'
   STATUS_EXISTS = 'exists'
   STATUS_SEARCHED = 'searched'
+  PER_SEARCH_PAGE = 5
 
   attr_accessible :url, :name, :xml
 
@@ -32,11 +33,11 @@ class Channel < ActiveRecord::Base
 
   def self.subscribe_or_find(user, search)
     channel = where(url: search).first
-    if channel and !user.channels.include? channel and !user.max_channels_reached?
+    if channel and !user.channels.include?(channel) and !user.max_channels_reached?
       user.channels << channel
-      {status: STATUS_SUBSCRIBED, articles: channel.articles}
-    elsif channel and user.channels.include? channel
-      {status: STATUS_EXISTS, articles: channel.articles}
+      {status: STATUS_SUBSCRIBED, articles: channel.articles.limit(5), channel: channel}
+    elsif channel and user.channels.include?(channel)
+      {status: STATUS_EXISTS, articles: channel.articles.limit(5), channel: channel}
     else
       {status: STATUS_SEARCHED, channels: find_by_url_or_name(search)}
     end

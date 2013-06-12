@@ -3,8 +3,8 @@ class SearchController < ApplicationController
   def index
     if request.xhr?
       search = params[:search]
-      channels = Kaminari.paginate_array(Channel.find_by_url_or_name(search)).page(1).per(5)
-      articles = Kaminari.paginate_array(Article.find_by_title_or_description(search)).page(1).per(5)
+      channels = Kaminari.paginate_array(Channel.find_by_url_or_name(search)).page(1).per(Channel::PER_SEARCH_PAGE)
+      articles = Kaminari.paginate_array(Article.find_by_title_or_description(search)).page(1).per(Article::PER_SEARCH_PAGE)
 
       data = {
         channels: channels.blank? ? '' : (render_to_string channels),
@@ -23,7 +23,7 @@ class SearchController < ApplicationController
   def channels_page
     if request.xhr?
       search = params[:search]
-      channels = Kaminari.paginate_array(Channel.find_by_url_or_name(search)).page(params[:page]).per(5)
+      channels = Kaminari.paginate_array(Channel.find_by_url_or_name(search)).page(params[:page]).per(Channel::PER_SEARCH_PAGE)
 
       data = {
         channels: (render_to_string channels),
@@ -31,6 +31,7 @@ class SearchController < ApplicationController
       }
 
       respond_to do |format|
+        format.html { render channels, status: :ok }
         format.json { render json: data, status: :ok }
       end
     end
@@ -40,7 +41,7 @@ class SearchController < ApplicationController
   def articles_page
     if request.xhr?
       search = params[:search]
-      articles = Kaminari.paginate_array(Article.find_by_title_or_description(search)).page(params[:page]).per(5)
+      articles = Kaminari.paginate_array(Article.find_by_title_or_description(search)).page(params[:page]).per(Article::PER_SEARCH_PAGE)
 
       data = {
         articles: (render_to_string articles),

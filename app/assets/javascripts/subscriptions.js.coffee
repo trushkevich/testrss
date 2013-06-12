@@ -28,6 +28,12 @@ $ ->
       form_wrapper.hide()
       form_wrapper.find('.response').html('')
       $('#main').html(data)
+      Channel.handle_subscribe_links()
+      Channel.handle_renaming()
+      if $('#channels').length
+        Channel.total_pages = $('#channels').attr('data-num-pages')
+      Article.handle_stars()
+      Article.handle_comments()
     .bind "ajax:error", (e, xhr, status, error) ->
       form_wrapper.find('.response').html('Something went wrong, please try again...')
       ###

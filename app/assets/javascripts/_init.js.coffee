@@ -1,6 +1,9 @@
 window.global = {
-  sorry: () ->
-    $('.modal').html('Sorry, but something went wrong')
+  sorry: (message) ->
+    if(message)
+      $('.modal').html(message)
+    else
+      $('.modal').html('Sorry, but something went wrong')
     $('.modal').dialog()
   near_bottom_of_page: () ->
     return $(window).scrollTop() > $(document).height() - $(window).height() - 100;

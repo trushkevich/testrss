@@ -46,9 +46,15 @@ class ChannelsController < ApplicationController
     respond_to do |format|
       if @channel.save
         # if channel is created it means that it is newly added channel and we need to
-        # subscribe a user for it and parse channel name and articles
-        current_user.channels << @channel
+        # parse channel name and articles
         data = Article.create_by_channel(@channel)
+        # subscribe a user for it if it is possible
+        unless current_user.max_channels_reached?
+          current_user.channels << @channel 
+          data[:subscribed] = true
+        else
+          data[:subscribed] = false
+        end
       else
         # if a channel is not created it means that it is either a not valid feed (ie search string)
         # or the channel already exists
@@ -58,9 +64,9 @@ class ChannelsController < ApplicationController
       format.json { render json: data, status: :ok, location: @channel }
 
       if data.has_key? :articles
-        format.html { render :partial => 'articles/list', :locals => { :articles => data[:articles] } }
+        format.html { render partial: 'articles/list', locals: { data: data } }
       elsif data.has_key? :channels
-        format.html { render :partial => 'channels/list', :locals => { :channels => data[:channels] } }
+        format.html { render partial: 'channels/list', locals: { channels: Kaminari.paginate_array(data[:channels]).page(1).per(Channel::PER_SEARCH_PAGE), search: params[:channel][:url] } }
       end
 
     end

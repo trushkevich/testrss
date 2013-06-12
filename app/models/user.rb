@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 
-  MAX_CHANNELS_BASIC = 10  
+  MAX_CHANNELS_BASIC = 100
   MAX_CHANNELS_MEDIUM = 20  
   MAX_CHANNELS_PREMIUM = 100  
 

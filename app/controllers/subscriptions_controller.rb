@@ -10,10 +10,23 @@ class SubscriptionsController < ApplicationController
       format.json { render json: e, status: :unprocessable_entity }
     end
   else
-    current_user.channels << @channel if (!current_user.channels.include? @channel && !current_user.max_channels_reached?)
-    respond_to do |format|
-      format.html { redirect_to @channel, notice: 'Successfully subscribed.' }
-      format.json { render json: @channel, status: :created, location: @channel }
+    message = if current_user.max_channels_reached?
+      'Maximum number of subscribed channels reached' 
+    elsif current_user.channels.include?(@channel)
+      'You are already subscribed to the channel' 
+    end
+
+    if (!current_user.channels.include?(@channel) && !current_user.max_channels_reached?)
+      current_user.channels << @channel
+      respond_to do |format|
+        format.html { redirect_to @channel, notice: 'Successfully subscribed.' }
+        format.json { render json: @channel, status: :created, location: @channel }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to @channel, notice: 'Unable to subscribe.' }
+        format.json { render json: message, status: :unprocessable_entity }
+      end
     end
   end
 
