@@ -1,26 +1,27 @@
 .channel.h60.pb10.pt10
-  .w150.fl
-    = link_to unsubscribe_path(channel_id: channel.id), method: :delete, :'data-type' => :json, class: "unsubscribe_link#{(current_user.channels.include? channel) ? '' : ' dn'}", remote: true do
-      .button.red.fl.small
-        = I18n.t("controllers.actions.unsubscribe")
-    = link_to subscribe_path(channel_id: channel.id), method: :post, :'data-type' => :json, class: "subscribe_link#{(!current_user.channels.include? channel) ? '' : ' dn'}", remote: true do
-      .button.green.fl.small
-        = I18n.t("controllers.actions.subscribe")
+  - if user_signed_in?
+    .w150.fl
+      = link_to unsubscribe_path(channel_id: channel.id), method: :delete, :'data-type' => :json, class: "unsubscribe_link#{(current_user.channels.include? channel) ? '' : ' dn'}", remote: true do
+        .button.red.fl.small
+          = I18n.t("controllers.actions.unsubscribe")
+      = link_to subscribe_path(channel_id: channel.id), method: :post, :'data-type' => :json, class: "subscribe_link#{(!current_user.channels.include? channel) ? '' : ' dn'}", remote: true do
+        .button.green.fl.small
+          = I18n.t("controllers.actions.subscribe")
 
-    br
-    .rename_channel_wrapper.pr[class="#{current_user.channels.include?(channel) ? '' : 'dn'}"]
-      .rename_channel.button.fl.small.mt5
-        = I18n.t('general.rename')
-      .rename_channel_form_wrapper.small_popup_form.w250
-        .close[title="#{I18n.t('general.close')}"]
-          | x
-        = I18n.t('general.provide_new_name')
-        = form_for(:subscription, url: update_subscription_path(channel), html: { method: :put, :'data-type' => 'json', :'data-channel-id' => channel.id }, remote: true) do |f|
-          = f.text_field :name, class: 'w200'
-          = f.submit I18n.t('general.rename')
-        .response
+      br
+      .rename_channel_wrapper.pr[class="#{current_user.channels.include?(channel) ? '' : 'dn'}"]
+        .rename_channel.button.fl.small.mt5
+          = I18n.t('general.rename')
+        .rename_channel_form_wrapper.small_popup_form.w250
+          .close[title="#{I18n.t('general.close')}"]
+            | x
+          = I18n.t('general.provide_new_name')
+          = form_for(:subscription, url: update_subscription_path(channel), html: { method: :put, :'data-type' => 'json', :'data-channel-id' => channel.id }, remote: true) do |f|
+            = f.text_field :name, class: 'w200'
+            = f.submit I18n.t('general.rename')
+          .response
 
   .fl
     .bold.font_120
-      = link_to channel.subscription_name(current_user), articles_channel_path(channel), :'data-channel-id' => channel.id
+      = link_to channel_name(channel), articles_channel_path(channel), :'data-channel-id' => channel.id
   .clear

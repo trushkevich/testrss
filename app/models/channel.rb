@@ -16,6 +16,8 @@ class Channel < ActiveRecord::Base
 
   validates :url, feed: true, uniqueness: true
 
+  after_destroy :cleanup
+
 
   def subscription_name(user)
     if user and subscription = Subscription.by_user_channel_ids(user.id, id) and !subscription.name.blank?
@@ -33,10 +35,10 @@ class Channel < ActiveRecord::Base
 
   def self.subscribe_or_find(user, search)
     channel = where(url: search).first
-    if channel and !user.channels.include?(channel) and !user.max_channels_reached?
+    if user and channel and !user.channels.include?(channel) and !user.max_channels_reached?
       user.channels << channel
       {status: STATUS_SUBSCRIBED, articles: channel.articles.limit(5), channel: channel}
-    elsif channel and user.channels.include?(channel)
+    elsif user and channel and user.channels.include?(channel)
       {status: STATUS_EXISTS, articles: channel.articles.limit(5), channel: channel}
     else
       {status: STATUS_SEARCHED, channels: find_by_url_or_name(search)}
@@ -100,6 +102,16 @@ class Channel < ActiveRecord::Base
     puts "\nRecent feeds distribution started at #{Time.now}"
     ChannelMailer.recent_feeds_email.deliver
     puts "\nRecent feeds finished at #{Time.now}"
+  end
+
+
+  private
+
+  def cleanup
+    if self.is_fired?
+      self.subscriptions.destroy_all
+      self.articles.destroy_all
+    end
   end
 
 end

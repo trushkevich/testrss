@@ -24,14 +24,17 @@
       .sidebar_menu_item
         = I18n.t('controllers.actions.search')
 
-    .mb30
+    - if user_signed_in?
+      .mb30
+      = link_to subscribed_channels_path do
+        .sidebar_menu_item
+          = I18n.t('general.my_channels')
+      = link_to favourite_articles_path do
+        .sidebar_menu_item
+          = I18n.t('general.favourites')
 
-    = link_to subscribed_channels_path do
-      .sidebar_menu_item
-        = I18n.t('general.my_channels')
-
-    = link_to favourite_articles_path do
-      .sidebar_menu_item
-        = I18n.t('general.favourites')
-
-
+    - if user_signed_in? and current_user.is_admin
+      .mb30
+      = link_to admin_root_path do
+        .sidebar_menu_item
+          = I18n.t('general.admin_area')

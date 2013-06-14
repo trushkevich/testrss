@@ -38,29 +38,6 @@ describe ChannelsController do
     end
   end
 
-  describe "GET show" do
-    it "assigns the requested channel as @channel" do
-      channel = Channel.create! valid_attributes
-      get :show, {:id => channel.to_param}, valid_session
-      assigns(:channel).should eq(channel)
-    end
-  end
-
-  describe "GET new" do
-    it "assigns a new channel as @channel" do
-      get :new, {}, valid_session
-      assigns(:channel).should be_a_new(Channel)
-    end
-  end
-
-  describe "GET edit" do
-    it "assigns the requested channel as @channel" do
-      channel = Channel.create! valid_attributes
-      get :edit, {:id => channel.to_param}, valid_session
-      assigns(:channel).should eq(channel)
-    end
-  end
-
   describe "POST create" do
     describe "with valid params" do
       it "creates a new Channel" do
@@ -95,65 +72,6 @@ describe ChannelsController do
         post :create, {:channel => { "url" => "invalid value" }}, valid_session
         response.should render_template("new")
       end
-    end
-  end
-
-  describe "PUT update" do
-    describe "with valid params" do
-      it "updates the requested channel" do
-        channel = Channel.create! valid_attributes
-        # Assuming there are no other channels in the database, this
-        # specifies that the Channel created on the previous line
-        # receives the :update_attributes message with whatever params are
-        # submitted in the request.
-        Channel.any_instance.should_receive(:update_attributes).with({ "url" => "MyString" })
-        put :update, {:id => channel.to_param, :channel => { "url" => "MyString" }}, valid_session
-      end
-
-      it "assigns the requested channel as @channel" do
-        channel = Channel.create! valid_attributes
-        put :update, {:id => channel.to_param, :channel => valid_attributes}, valid_session
-        assigns(:channel).should eq(channel)
-      end
-
-      it "redirects to the channel" do
-        channel = Channel.create! valid_attributes
-        put :update, {:id => channel.to_param, :channel => valid_attributes}, valid_session
-        response.should redirect_to(channel)
-      end
-    end
-
-    describe "with invalid params" do
-      it "assigns the channel as @channel" do
-        channel = Channel.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Channel.any_instance.stub(:save).and_return(false)
-        put :update, {:id => channel.to_param, :channel => { "url" => "invalid value" }}, valid_session
-        assigns(:channel).should eq(channel)
-      end
-
-      it "re-renders the 'edit' template" do
-        channel = Channel.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Channel.any_instance.stub(:save).and_return(false)
-        put :update, {:id => channel.to_param, :channel => { "url" => "invalid value" }}, valid_session
-        response.should render_template("edit")
-      end
-    end
-  end
-
-  describe "DELETE destroy" do
-    it "destroys the requested channel" do
-      channel = Channel.create! valid_attributes
-      expect {
-        delete :destroy, {:id => channel.to_param}, valid_session
-      }.to change(Channel, :count).by(-1)
-    end
-
-    it "redirects to the channels list" do
-      channel = Channel.create! valid_attributes
-      delete :destroy, {:id => channel.to_param}, valid_session
-      response.should redirect_to(channels_url)
     end
   end
 

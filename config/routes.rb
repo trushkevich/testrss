@@ -9,7 +9,7 @@ Testrss::Application.routes.draw do
   delete '/favourites' => 'favourites#remove_from_favourites', as: :remove_from_favourites
 
 
-  resources :articles do
+  resources :articles, only: [:index] do
     collection do
       get :favourite, as: :favourite
     end
@@ -25,7 +25,7 @@ Testrss::Application.routes.draw do
   delete '/subscriptions' => 'subscriptions#destroy', as: :unsubscribe
 
 
-  resources :channels do
+  resources :channels, only: [:index, :create] do
     collection do
       get :subscribed, as: :subscribed
     end
@@ -33,7 +33,6 @@ Testrss::Application.routes.draw do
       get :articles
     end
   end
-
 
   devise_for :users, :controllers => {
     :omniauth_callbacks => "omniauth_callbacks",
@@ -49,16 +48,12 @@ Testrss::Application.routes.draw do
     get '/profile' => 'registrations#show', as: :user_root
   end
 
-  # resources :users
-
-  get "site/index"
-
-
-
-  match '*path', :to => 'application#routing_error'
-
 
   root to: 'articles#index'
+
+  ActiveAdmin.routes(self)
+
+  match '*path', :to => 'application#routing_error'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

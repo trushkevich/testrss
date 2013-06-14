@@ -5,3 +5,9 @@ In order to make Google auth working locally testrss.example.com domain should b
 
 To add task to cron run in command line:
 $ whenever --update-crontab testrss --set environment=development
+
+To set a user to be an admin run in command line:
+$ rake users:set_admin[:id]
+
+To unset a user from being an admin run in command line:
+$ rake users:unset_admin[:id]

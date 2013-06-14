@@ -30,37 +30,6 @@ describe SubscriptionsController do
   # SubscriptionsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
-  describe "GET index" do
-    it "assigns all subscriptions as @subscriptions" do
-      subscription = Subscription.create! valid_attributes
-      get :index, {}, valid_session
-      assigns(:subscriptions).should eq([subscription])
-    end
-  end
-
-  describe "GET show" do
-    it "assigns the requested subscription as @subscription" do
-      subscription = Subscription.create! valid_attributes
-      get :show, {:id => subscription.to_param}, valid_session
-      assigns(:subscription).should eq(subscription)
-    end
-  end
-
-  describe "GET new" do
-    it "assigns a new subscription as @subscription" do
-      get :new, {}, valid_session
-      assigns(:subscription).should be_a_new(Subscription)
-    end
-  end
-
-  describe "GET edit" do
-    it "assigns the requested subscription as @subscription" do
-      subscription = Subscription.create! valid_attributes
-      get :edit, {:id => subscription.to_param}, valid_session
-      assigns(:subscription).should eq(subscription)
-    end
-  end
-
   describe "POST create" do
     describe "with valid params" do
       it "creates a new Subscription" do

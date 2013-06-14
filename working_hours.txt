@@ -1,0 +1,128 @@
+I. 
+test_1.pdf  -  1h 20m
++ 30m - custom attr_reader and attr_accessor
+
+= 1h 50m
+
+II. 
+test.rss.en.pdf
+
+1. setting up development environment (RVM, ruby 1.9.3p194, apache, passenger, rails 3.2.12, bundler already installed), db, dbms, git, virtualhost, choosing gems to use, basic project setup, rspec testing environment setup
+
+  start 23:30 17.05.2013
+  end 00:40 18.05.2013
+  1h 10m
+
+2. implementing user reg/auth system with Devise, basic styling
+
+  start 0:40 18.05.2013
+  end 1:10 18.05.2013
+  30m
+
+  start 23:30 18.05.2013
+  end 01:40 19.05.2013
+  2h 10m
+
+  start 0:50 20.05.2013
+  end 03:30 20.05.2013
+  2h 40m
+
+  start 23:00 20.05.2013
+  end 03:00 21.05.2013
+  4h
+
+  start 22:30 21.05.2013
+  end 01:20 22.05.2013
+  2h 50m
+
+3. implementing avatar image upload/crop with Paperclip, adding profile_type to User model, adding some tests for User model, converting some views to slim
+
+  start 22:50 22.05.2013
+  end 01:10 23.05.2013
+  2h 20m
+
+  start 00:40 24.05.2013
+  end 01:40 24.05.2013
+  1h
+
+  start 23:20 24.05.2013
+  end 04:10 24.05.2013
+  4h 50m
+
+  start 23:10 25.05.2013
+  end 01:20 26.05.2013
+  2h 10m
+
+  start 12:50 26.05.2013
+  end 14:50 26.05.2013
+  2h 00m
+
+4. implementing channels and articles
+  start 23:30 27.05.2013
+  end 02:00 28.05.2013
+  2h 30m
+
+  start 23:30 29.05.2013
+  end 02:45 30.05.2013
+  3h 15m
+
+  start 23:00 30.05.2013
+  end 02:00 31.05.2013
+  3h 00m
+
+  start 23:00 31.05.2013
+  end 02:00 01.06.2013
+  3h 00m
+
+  start 22:40 01.06.2013
+  end 02:40 02.06.2013
+  4h 00m
+
+  start 22:50 03.06.2013
+  end 03:30 04.06.2013
+  4h 40m
+
+  start 23:05 04.06.2013
+  end 02:20 05.06.2013
+  3h 15m
+
+  start 23:15 05.06.2013
+  end 00:45 06.06.2013
+  1h 30m
+
+  start 23:05 06.06.2013
+  end 01:25 07.06.2013
+  2h 20m
+
+  start 23:15 07.06.2013
+  end 01:05 08.06.2013
+  2h 50m
+
+  start 23:05 09.06.2013
+  end 00:25 10.06.2013
+  1h 20m
+  
+  start 23:05 10.06.2013
+  end 01:15 11.06.2013
+  2h 10m
+
+  start 23:40 11.06.2013
+  end 01:50 12.06.2013
+  2h 10m
+
+  start 22:40 12.06.2013
+  end 01:40 13.06.2013
+  3h 00m
+
+5. ActiveAdmin, restricting access, refactoring
+
+  start 23:20 13.06.2013
+  end 01:30 14.06.2013
+  2h 10m
+
+  start 23:25 14.06.2013
+  end 00:45 15.06.2013
+  1h 20m
+
+
+total: 1h 50m + 1h 10m + 12h 10 m + 12h 20m + 39h 00m + 3h 30m = 70h 00m

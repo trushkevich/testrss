@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :first_name, :last_name, :login, :password, :password_confirmation, :remember_me,
-                  :provider, :uid, :profile_type, :avatar, :crop_x, :crop_y, :crop_w, :crop_h
+                  :provider, :uid, :profile_type, :avatar, :crop_x, :crop_y, :crop_w, :crop_h, :is_admin
                   
   attr_accessor :meta_login, :crop_x, :crop_y, :crop_w, :crop_h
 
@@ -44,6 +44,8 @@ class User < ActiveRecord::Base
   validates :profile_type, inclusion: { in: %w(basic medium premium) }, presence: true
   validates_attachment_content_type :avatar, content_type: ['image/jpeg', 'image/png', 'image/gif', 'image/pjpeg', 'image/x-png'] #last two for IE 6-8
   validates_attachment_size :avatar, less_than: 1.megabyte
+
+  after_destroy :cleanup
 
 
   def full_name
@@ -195,5 +197,15 @@ class User < ActiveRecord::Base
   #############################
   ###    PAPERCLIP  END     ###
   #############################
+
+
+  private
+
+  def cleanup
+    if self.is_fired?
+      self.subscriptions.destroy_all
+      self.favourites.destroy_all
+    end
+  end
 
 end

@@ -16,6 +16,8 @@ class Article < ActiveRecord::Base
 
   acts_as_commentable
 
+  after_destroy :cleanup
+
 
   def self.create_by_channel(channel)
     # no exception handling as we assume that if channel is saved then it has a valid xml
@@ -61,5 +63,16 @@ class Article < ActiveRecord::Base
 
     where(where_query).all
   end
+
+
+  private
+
+  def cleanup
+    if self.is_fired?
+      self.favourites.destroy_all
+      self.comments.destroy_all
+    end
+  end
+
 
 end

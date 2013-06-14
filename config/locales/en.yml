@@ -63,6 +63,8 @@ en:
     favourite_articles: 'Favourite articles'
     channel: 'Channel'
     channels: 'Channels'
+    articles: 'Articles'
+    users: 'Users'
     my_channels: 'My channels'
     no_articles: 'No articles found'
     no_channels: 'No channels found'
@@ -73,6 +75,7 @@ en:
     hide_comments: 'Hide comments'
     add_comment: 'Add a comment'
     provide_your_comment: 'Provide your comment'
+    comment_added: 'Comment successfully added.'
     found_channels: 'Found channels'
     found_articles: 'Found articles'
     found_channel: 'Channel found'
@@ -82,6 +85,25 @@ en:
     new_channel_added: 'New channel added'
     and_subscribed: 'and subscribed'
     but_not_subscribed: 'but not subscribed'
+    admin_area: 'Administrative area'
+    page_not_found: "Requested page not found."
+    total_users: "Total users: "
+    total_channels: "Total channels: "
+    total_articles: "Total articles: "
+    dashboard: "Dashboard"
+    details: "Details"
+    failed_add_favourite: 'Failed to add to favourites.'
+    failed_remove_favourite: 'Failed to remove to favourites.'
+    added_favourite: 'Successfully added to favourites.'
+    removed_favourite: 'Successfully removed from favourites.'
+    failed_to_subscribe: 'Failed to subscribe.'
+    failed_to_unsubscribe: 'Failed to unsubscribe.'
+    unable_to_subscribe: 'Unable to subscribe.'
+    subscribed: 'Successfully subscribed.'
+    unsubscribed: 'Successfully unsubscribed.'
+    subscription_updated: 'Subscription was successfully updated.'
+    maximum_channels_reached: 'Maximum number of subscribed channels reached'
+    already_subscribed: 'You are already subscribed to the channel' 
   text:
     find_channel: "In order to subscribe to or find channels please provide a search string or paste channel's URL-address:"
     nothing_found: 'Nothing found for the provided search query'
@@ -93,3 +115,5 @@ en:
     ensure_words_correct: 'Ensure that all words are correct'
     try_other_keywords: 'Try to use other keywords'
     try_general_keywords: 'Try to use more general keywords'
+    must_be_signed_in: "You must be signed in to access this section"
+    must_be_signed_in_admin: "You must be logged in as an admin to access this section"
