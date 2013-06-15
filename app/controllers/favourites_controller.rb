@@ -1,5 +1,5 @@
 class FavouritesController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :require_user
 
   # POST /subscriptions/1
   # POST /subscriptions/1.json

@@ -1,5 +1,5 @@
 class ArticlesController < ApplicationController
-  before_filter :authenticate_user!, only: [:favourite, :add_comment]
+  before_filter :require_user, only: [:favourite, :add_comment]
 
   # GET /articles
   # GET /articles.json

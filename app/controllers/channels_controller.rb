@@ -1,5 +1,5 @@
 class ChannelsController < ApplicationController
-  before_filter :authenticate_user!, only: [:subscribed]
+  before_filter :require_user, only: [:subscribed]
 
   # GET /channels
   # GET /channels.json

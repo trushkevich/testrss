@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
     root_path
   end
 
-  def authenticate_user!
+  def require_user
     unless user_signed_in?
       flash[:alert] = I18n.t('text.must_be_signed_in')
       redirect_to new_user_session_path
