@@ -9,8 +9,9 @@
   .fl.w700
     .h2
       = link_to article.title, article.link
-    .mt5
-      = article.description.html_safe if article.description
+    - unless article.description.blank?
+      .mt5
+        = article.description.html_safe
     .mt5.gray
       = format_date article.published_at
       span.ml5.mr5
