@@ -9,10 +9,15 @@ FactoryGirl.define do
     f.email { Faker::Internet.email }
     f.password { Faker::Lorem.word }
     f.profile_type { 'basic' }
+    avatar { fixture_file_upload(Rails.root.join('spec', 'images', 'rails.png'), 'image/png') }
   end
 
   factory :invalid_user, parent: :user do |f|
     f.first_name nil
+  end
+
+  factory :basic_user, parent: :user do |f|
+    f.profile_type { 'basic' }
   end
 
   factory :medium_user, parent: :user do |f|
@@ -22,4 +27,10 @@ FactoryGirl.define do
   factory :premium_user, parent: :user do |f|
     f.profile_type { 'premium' }
   end
+
+  factory :twitter_user_without_email, parent: :user do |f|
+    f.email { '' }
+    f.provider { 'twitter' }
+  end
+
 end

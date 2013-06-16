@@ -124,5 +124,11 @@ test.rss.en.pdf
   end 00:45 15.06.2013
   1h 20m
 
+6. Tests
 
-total: 1h 50m + 1h 10m + 12h 10 m + 12h 20m + 39h 00m + 3h 30m = 70h 00m
+  start 23:15 16.06.2013
+  end 00:45 17.06.2013
+  1h 30m
+
+
+total: 1h 50m + 1h 10m + 12h 10 m + 12h 20m + 39h 00m + 3h 30m +  = 70h 00m

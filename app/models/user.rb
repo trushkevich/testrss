@@ -13,8 +13,9 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :first_name, :last_name, :login, :password, :password_confirmation, :remember_me,
                   :provider, :uid, :profile_type, :avatar, :crop_x, :crop_y, :crop_w, :crop_h, :is_admin
-                  
-  attr_accessor :meta_login, :crop_x, :crop_y, :crop_w, :crop_h
+
+  attr_accessor :meta_login, :crop_x, :crop_y, :crop_w, :crop_h, :avatar_file_name, :avatar_content_type,
+                :avatar_file_size
 
   has_attached_file :avatar,
     url: "/assets/:class/:attachment/:id/:style/:hash.:extension",
@@ -37,6 +38,9 @@ class User < ActiveRecord::Base
   has_many :favourite_articles, through: :favourites, source: :favouritable, source_type: 'Article'
 
   scope :with_email, lambda { where("email <> ?", '' ) }
+
+  scope :updated, lambda { where("updated_at > created_at").limit(1) }
+  scope :not_updated, lambda { where("updated_at = created_at").limit(1) }
 
   validates :first_name, length: { maximum: 50 }, presence: true
   validates :last_name, length: { maximum: 50 }, presence: true
