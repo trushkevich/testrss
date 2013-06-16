@@ -131,4 +131,4 @@ test.rss.en.pdf
   1h 30m
 
 
-total: 1h 50m + 1h 10m + 12h 10 m + 12h 20m + 39h 00m + 3h 30m +  = 70h 00m
+total: 1h 50m + 1h 10m + 12h 10 m + 12h 20m + 39h 00m + 3h 30m + 1h 30m = 71h 30m
