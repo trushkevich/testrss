@@ -1,5 +1,5 @@
 class RegistrationsController < Devise::RegistrationsController
-  before_filter :find_resource, only: [:crop, :recrop, :show]
+  before_filter :find_resource, only: [:update, :crop, :recrop, :show]
 
   # overriding Devise registrations controller create action to let users upload avatars
   def create
@@ -31,7 +31,6 @@ class RegistrationsController < Devise::RegistrationsController
 
   # overriding Devise registrations controller update action to let users upload avatars
   def update
-    self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
     prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
 
     @resource = resource
@@ -63,8 +62,13 @@ class RegistrationsController < Devise::RegistrationsController
 
   # recrop avatar
   def recrop
-    @resource.reprocess_pre_crop
-    render :crop
+    if @resource.avatar_missing?
+      flash[:alert] = I18n.t('general.no_avatar_to_recrop')
+      redirect_to edit_user_registration_path
+    else
+      @resource.reprocess_pre_crop
+      render :crop
+    end
   end
 
   # view profile page

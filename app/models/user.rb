@@ -4,6 +4,8 @@ class User < ActiveRecord::Base
   MAX_CHANNELS_MEDIUM = 20  
   MAX_CHANNELS_PREMIUM = 100  
 
+  AVATAR_MISSING = "/assets/missing_avatar.png"
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
@@ -14,8 +16,7 @@ class User < ActiveRecord::Base
   attr_accessible :email, :first_name, :last_name, :login, :password, :password_confirmation, :remember_me,
                   :provider, :uid, :profile_type, :avatar, :crop_x, :crop_y, :crop_w, :crop_h, :is_admin
 
-  attr_accessor :meta_login, :crop_x, :crop_y, :crop_w, :crop_h, :avatar_file_name, :avatar_content_type,
-                :avatar_file_size
+  attr_accessor :meta_login, :crop_x, :crop_y, :crop_w, :crop_h
 
   has_attached_file :avatar,
     url: "/assets/:class/:attachment/:id/:style/:hash.:extension",
@@ -29,7 +30,7 @@ class User < ActiveRecord::Base
       tiny:     ["50x50#", :png],
     },
     processors: [:cropper],
-    default_url: "/assets/missing_avatar.png"
+    default_url: AVATAR_MISSING
 
   has_many :subscriptions
   has_many :channels, through: :subscriptions
@@ -183,10 +184,15 @@ class User < ActiveRecord::Base
     avatar.reprocess!
   end
 
+  def avatar_missing?
+    avatar.url.gsub(/\?\d+\z/,'') == AVATAR_MISSING
+  end
+
   # to allow recrop previously uploaded image
   # file operations are necessary due to after recropping one style, filenames for all other
   # style are being recalculated
   def reprocess_pre_crop
+    return nil if avatar_missing?
     old_files = {}
     avatar.styles.keys.each do |style|
       old_files[style] = avatar.path(style)

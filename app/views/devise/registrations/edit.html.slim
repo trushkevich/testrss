@@ -13,7 +13,7 @@ h2
   .fl
     = image_tag current_user.avatar.url(:small), class: 'mr10 w100 h100'
   .fl
-    - if resource.avatar
+    - unless resource.avatar_missing?
       = link_to I18n.t('controllers.actions.recrop'), recrop_path
       br
     = f.file_field :avatar

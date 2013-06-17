@@ -104,6 +104,7 @@ en:
     subscription_updated: 'Subscription was successfully updated.'
     maximum_channels_reached: 'Maximum number of subscribed channels reached'
     already_subscribed: 'You are already subscribed to the channel' 
+    no_avatar_to_recrop: 'No avatar to recrop'
   text:
     find_channel: "In order to subscribe to or find channels please provide a search string or paste channel's URL-address:"
     nothing_found: 'Nothing found for the provided search query'
