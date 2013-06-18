@@ -131,6 +131,6 @@ test.rss.en.pdf
   1h 30m
 
   start 23:30 17.06.2013
-  end 
+  end  03:30 18.06.2013
 
-total: 1h 50m + 1h 10m + 12h 10 m + 12h 20m + 39h 00m + 3h 30m + 1h 30m = 71h 30m
+total: 1h 50m + 1h 10m + 12h 10 m + 12h 20m + 39h 00m + 3h 30m + 5h 30m = 75h 30m

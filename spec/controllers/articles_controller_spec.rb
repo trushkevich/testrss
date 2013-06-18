@@ -20,21 +20,105 @@ require 'spec_helper'
 
 describe ArticlesController do
 
-  # This should return the minimal set of attributes required to create a valid
-  # Article. As you add validations to Article, be sure to
-  # adjust the attributes here as well.
-  let(:valid_attributes) { { "title" => "MyString" } }
-
-  # This should return the minimal set of values that should be in the session
-  # in order to pass any filters (e.g. authentication) defined in
-  # ArticlesController. Be sure to keep this updated too.
-  let(:valid_session) { {} }
+  before :each do
+    @user = FactoryGirl.build(:user)
+    @user.confirm!
+    @user.save!
+  end
 
   describe "GET index" do
     it "assigns all articles as @articles" do
-      article = Article.create! valid_attributes
-      get :index, {}, valid_session
+      article = FactoryGirl.create(:article)
+      get :index
       assigns(:articles).should eq([article])
+    end
+
+    it "should render index template" do
+      get :index
+      response.should render_template(:index)
+    end
+  end
+
+  describe "GET favourite" do
+    it "redirects to sign in page if user is not signed in" do
+      get :favourite
+      response.should redirect_to(new_user_session_path)
+    end
+
+    it "does not redirect to sign in page if user is signed in" do
+      sign_in @user
+      get :favourite
+      response.should_not redirect_to(new_user_session_path)
+    end
+
+    it "assigns all favourite articles as @articles if user is signed in" do
+      sign_in @user
+      article = FactoryGirl.create(:article)
+      article2 = FactoryGirl.create(:article)
+      @user.favourite_articles << article
+      get :favourite
+      assigns(:articles).should eq([article])
+    end
+
+    it "should render index template" do
+      sign_in @user
+      get :favourite
+      response.should render_template(:index)
+    end
+  end
+
+  describe "GET articles/:id/comments" do
+    it "assigns article according to :id from route as @article" do
+      article = FactoryGirl.create(:article)
+      xhr :get, :comments, id: article.id, format: :json
+      assigns(:article).should eq(article)
+    end
+
+    it "raises an error if there is no article found according to :id from route" do
+      expect { xhr :get, :comments, id: 100 }.to raise_error ActiveRecord::RecordNotFound
+    end
+
+    it "assigns article's comments as @comments" do
+      article = FactoryGirl.create(:article)
+      comment = article.comments.create({comment: 'test'}.merge(user_id: @user.id))
+      comment2 = article.comments.create({comment: 'test2'}.merge(user_id: @user.id))
+      xhr :get, :comments, id: article.id, format: :json
+      assigns(:comments).should eq([comment, comment2])
+    end
+  end
+
+  describe "POST articles/:id/add_comment" do
+    it "redirects to sign in page if user is not signed in" do
+      article = FactoryGirl.create(:article)
+      xhr :post, :add_comment, id: article.id, comment: {comment: 'test'}, format: :json
+      response.should redirect_to(new_user_session_path)
+    end
+
+    it "does not redirect to sign in page if user is signed in" do
+      sign_in @user
+      article = FactoryGirl.create(:article)
+      xhr :post, :add_comment, id: article.id, comment: {comment: 'test'}, format: :json
+      response.should_not redirect_to(new_user_session_path)
+    end
+
+    it "assigns article according to :id from route as @article" do
+      sign_in @user
+      article = FactoryGirl.create(:article)
+      xhr :post, :add_comment, id: article.id, comment: {comment: 'test'}, format: :json
+      assigns(:article).should eq(article)
+    end
+
+    it "raises an error if there is no article found according to :id from route" do
+      sign_in @user
+      expect { xhr :post, :add_comment, id: 1000 }.to raise_error ActiveRecord::RecordNotFound
+    end
+
+    it "adds to an article a comment according to passed params" do
+      sign_in @user
+      article = FactoryGirl.create(:article)
+      expect do
+        xhr :post, :add_comment, id: article.id, comment: {comment: 'test'}, format: :json
+      end.to change{article.comments.count}.from(0).to(1)
     end
   end
 

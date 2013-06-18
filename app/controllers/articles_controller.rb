@@ -40,13 +40,13 @@ class ArticlesController < ApplicationController
   # POST /articles/1/add_comment.json
   def add_comment
     @article = Article.find(params[:id])
-    
+
     respond_to do |format|
       if comment = @article.comments.create(params[:comment].merge(user_id: current_user.id))
         format.html { redirect_to @article, notice: I18n.t('general.comment_added') }
         rendered_comments = ''
         @article.comments.each do |comment|
-          rendered_comments << render_to_string('articles/_comment', :layout => false, :locals => {comment: comment})
+          rendered_comments << render_to_string('articles/_comment', :layout => false, :locals => {comment: comment}, :formats => [:html])
         end
         format.json { render json: { comments: rendered_comments, count: @article.comments.count } }
       else
