@@ -26,18 +26,56 @@ describe ArticlesController do
     @user.save!
   end
 
+
   describe "GET index" do
-    it "assigns all articles as @articles" do
-      article = FactoryGirl.create(:article)
+    it "does not require user to be signed in" do
       get :index
-      assigns(:articles).should eq([article])
+      response.should_not redirect_to(new_user_session_path)
+    end
+
+    it "assigns all articles as @articles" do
+      sign_in @user
+      article = FactoryGirl.create(:article)
+      article2 = FactoryGirl.create(:article)
+      @user.favourite_articles << article
+      get :index
+      assigns(:articles).sort_by{|article| article.id}.should eq([article, article2])
+    end
+
+    it "@articles should be ordered by publishing date desc" do
+      article = FactoryGirl.create(:article, published_at: Time.now - 1.day)
+      article1 = FactoryGirl.create(:article, published_at: Time.now - 2.days)
+      article2 = FactoryGirl.create(:article, published_at: Time.now - 3.days)
+      get :index
+      assigns(:articles).should eq([article, article1, article2])
+    end
+
+    it "should paginate articles by 5 per page" do
+      get :index
+      10.times { FactoryGirl.create(:article) }
+      assigns(:articles).count.should eq(5)
     end
 
     it "should render index template" do
       get :index
       response.should render_template(:index)
     end
+
+    describe "non-ajax request" do
+      it "should render layout" do
+        get :index
+        response.should render_template(:layout => "layouts/application")
+      end
+    end
+
+    describe "ajax request" do
+      it "should not render layout" do
+        xhr :get, :index, format: :html
+        response.should_not render_template(:layout => "layouts/application")
+      end
+    end
   end
+
 
   describe "GET favourite" do
     it "redirects to sign in page if user is not signed in" do
@@ -49,6 +87,25 @@ describe ArticlesController do
       sign_in @user
       get :favourite
       response.should_not redirect_to(new_user_session_path)
+    end
+
+    it "@articles should be ordered by publishing date desc" do
+      article = FactoryGirl.create(:article, published_at: Time.now - 1.day)
+      article1 = FactoryGirl.create(:article, published_at: Time.now - 2.days)
+      article2 = FactoryGirl.create(:article, published_at: Time.now - 3.days)
+      get :index
+      assigns(:articles).should eq([article, article1, article2])
+    end
+
+    it "should paginate articles by 5 per page" do
+      get :index
+      10.times { FactoryGirl.create(:article) }
+      assigns(:articles).count.should eq(5)
+    end
+
+    it "should render index template" do
+      get :index
+      response.should render_template(:index)
     end
 
     it "assigns all favourite articles as @articles if user is signed in" do
@@ -65,9 +122,30 @@ describe ArticlesController do
       get :favourite
       response.should render_template(:index)
     end
+
+    describe "non-ajax request" do
+      it "should render layout" do
+        get :index
+        response.should render_template(:layout => "layouts/application")
+      end
+    end
+
+    describe "ajax request" do
+      it "should not render layout" do
+        xhr :get, :index, format: :html
+        response.should_not render_template(:layout => "layouts/application")
+      end
+    end
   end
 
+
   describe "GET articles/:id/comments" do
+    it "redirects to root url if request is not ajax" do
+      article = FactoryGirl.create(:article)
+      get :comments, id: article.id
+      response.should redirect_to(root_url)
+    end
+
     it "assigns article according to :id from route as @article" do
       article = FactoryGirl.create(:article)
       xhr :get, :comments, id: article.id, format: :json
@@ -87,38 +165,47 @@ describe ArticlesController do
     end
   end
 
+
   describe "POST articles/:id/add_comment" do
+    before :each do
+      sign_in @user
+      @article = FactoryGirl.create(:article)
+    end
+
     it "redirects to sign in page if user is not signed in" do
-      article = FactoryGirl.create(:article)
-      xhr :post, :add_comment, id: article.id, comment: {comment: 'test'}, format: :json
+      sign_out @user
+      xhr :post, :add_comment, id: @article.id, comment: {comment: 'test'}, format: :json
       response.should redirect_to(new_user_session_path)
     end
 
     it "does not redirect to sign in page if user is signed in" do
-      sign_in @user
-      article = FactoryGirl.create(:article)
-      xhr :post, :add_comment, id: article.id, comment: {comment: 'test'}, format: :json
+      xhr :post, :add_comment, id: @article.id, comment: {comment: 'test'}, format: :json
       response.should_not redirect_to(new_user_session_path)
     end
 
+    it "redirects to root url if request is not ajax" do
+      post :add_comment, id: @article.id, comment: {comment: 'test'}, format: :json
+      response.should redirect_to(root_url)
+    end
+
     it "assigns article according to :id from route as @article" do
-      sign_in @user
-      article = FactoryGirl.create(:article)
-      xhr :post, :add_comment, id: article.id, comment: {comment: 'test'}, format: :json
-      assigns(:article).should eq(article)
+      xhr :post, :add_comment, id: @article.id, comment: {comment: 'test'}, format: :json
+      assigns(:article).should eq(@article)
     end
 
     it "raises an error if there is no article found according to :id from route" do
-      sign_in @user
       expect { xhr :post, :add_comment, id: 1000 }.to raise_error ActiveRecord::RecordNotFound
     end
 
-    it "adds to an article a comment according to passed params" do
-      sign_in @user
-      article = FactoryGirl.create(:article)
+    it "adds a comment to an article according to passed params" do
       expect do
-        xhr :post, :add_comment, id: article.id, comment: {comment: 'test'}, format: :json
-      end.to change{article.comments.count}.from(0).to(1)
+        xhr :post, :add_comment, id: @article.id, comment: {comment: 'test'}, format: :json
+      end.to change{@article.comments.count}.from(0).to(1)
+    end
+
+    it "should render template articles/comments" do
+      xhr :post, :add_comment, id: @article.id, comment: {comment: 'test'}, format: :json
+      response.should render_template('articles/comments')
     end
   end
 

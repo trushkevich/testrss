@@ -1,5 +1,6 @@
 class ArticlesController < ApplicationController
   before_filter :require_user, only: [:favourite, :add_comment]
+  before_filter :xhr_only, except: [:index, :favourite]
 
   # GET /articles
   # GET /articles.json
@@ -36,21 +37,15 @@ class ArticlesController < ApplicationController
     end
   end
 
-  # POST /articles/1/add_comment
   # POST /articles/1/add_comment.json
   def add_comment
     @article = Article.find(params[:id])
 
     respond_to do |format|
       if comment = @article.comments.create(params[:comment].merge(user_id: current_user.id))
-        format.html { redirect_to @article, notice: I18n.t('general.comment_added') }
-        rendered_comments = ''
-        @article.comments.each do |comment|
-          rendered_comments << render_to_string('articles/_comment', :layout => false, :locals => {comment: comment}, :formats => [:html])
-        end
+        rendered_comments = render_to_string('articles/comments', :layout => false, :formats => [:html])
         format.json { render json: { comments: rendered_comments, count: @article.comments.count } }
       else
-        format.html { render action: "edit" }
         format.json { render json: false, status: :unprocessable_entity }
       end
     end

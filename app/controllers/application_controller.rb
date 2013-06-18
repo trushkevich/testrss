@@ -15,6 +15,9 @@ class ApplicationController < ActionController::Base
   end
 
 
+  def xhr_only
+    routing_error unless request.xhr?
+  end
 
   def after_sign_in_path_for(resource)
     root_path
